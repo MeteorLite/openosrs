@@ -79,7 +79,7 @@ public class class260 {
 		}
 
 		if (class4.garbageCollector != null) {
-			long var9 = Occluder.method4335();
+			long var9 = Occluder.getServerTime();
 			long var3 = class4.garbageCollector.getCollectionTime();
 			if (-1L != GameEngine.garbageCollectorLastCollectionTime) {
 				long var5 = var3 - GameEngine.garbageCollectorLastCollectionTime;

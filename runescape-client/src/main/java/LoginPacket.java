@@ -6,7 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ie")
 @Implements("LoginPacket")
-public class LoginPacket implements class238 {
+public class LoginPacket implements Packet {
 	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		descriptor = "Lie;"

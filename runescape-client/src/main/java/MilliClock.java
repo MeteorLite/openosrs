@@ -40,7 +40,7 @@ public class MilliClock extends Clock {
 		this.field1580 = 256;
 		this.field1582 = 1;
 		this.field1583 = 0;
-		this.field1584 = Occluder.method4335();
+		this.field1584 = Occluder.getServerTime();
 
 		for (int var1 = 0; var1 < 10; ++var1) {
 			this.field1581[var1] = this.field1584;
@@ -72,7 +72,7 @@ public class MilliClock extends Clock {
 		int var4 = this.field1582;
 		this.field1580 = 300;
 		this.field1582 = 1;
-		this.field1584 = Occluder.method4335();
+		this.field1584 = Occluder.getServerTime();
 		if (0L == this.field1581[this.field1585]) {
 			this.field1580 = var3;
 			this.field1582 = var4;

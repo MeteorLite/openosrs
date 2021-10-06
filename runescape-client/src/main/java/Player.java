@@ -635,7 +635,7 @@ public final class Player extends Actor {
 		garbageValue = "1704721627"
 	)
 	public static boolean method2117() {
-		long var0 = Occluder.method4335();
+		long var0 = Occluder.getServerTime();
 		int var2 = (int)(var0 - KeyHandler.field149);
 		KeyHandler.field149 = var0;
 		if (var2 > 200) {

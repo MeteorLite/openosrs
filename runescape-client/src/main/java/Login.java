@@ -66,7 +66,8 @@ public class Login {
 	@ObfuscatedGetter(
 		intValue = -267030897
 	)
-	static int field874;
+	@Export("Login_banType")
+	static int Login_banType;
 	@ObfuscatedName("ac")
 	@ObfuscatedGetter(
 		intValue = 504956167
@@ -149,7 +150,7 @@ public class Login {
 		loginBoxX = xPadding + 202;
 		Login_loadingPercent = 10;
 		Login_loadingText = "";
-		field874 = -1;
+		Login_banType = -1;
 		field883 = 1;
 		loginIndex = 0;
 		Login_response0 = "";

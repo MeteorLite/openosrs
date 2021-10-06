@@ -559,7 +559,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 		}
 
 		this.isCanvasInvalid = false;
-		this.field210 = Occluder.method4335();
+		this.field210 = Occluder.getServerTime();
 	}
 
 	@ObfuscatedName("j")
@@ -601,7 +601,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 	)
 	@Export("clientTick")
 	void clientTick() {
-		long var1 = Occluder.method4335();
+		long var1 = Occluder.getServerTime();
 		long var3 = clientTickTimes[class78.field1019];
 		clientTickTimes[class78.field1019] = var1;
 		class78.field1019 = class78.field1019 + 1 & 31;
@@ -623,7 +623,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 	@Export("graphicsTick")
 	void graphicsTick() {
 		Container var1 = this.container();
-		long var2 = Occluder.method4335();
+		long var2 = Occluder.getServerTime();
 		long var4 = graphicsTickTimes[Varcs.field1266];
 		graphicsTickTimes[Varcs.field1266] = var2;
 		Varcs.field1266 = Varcs.field1266 + 1 & 31;
@@ -885,7 +885,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
 	public final void destroy() {
 		if (this == gameEngine && !isKilled) {
-			stopTimeMs = Occluder.method4335();
+			stopTimeMs = Occluder.getServerTime();
 			PlayerType.method5099(5000L);
 			this.kill();
 		}
@@ -894,7 +894,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 	public final synchronized void paint(Graphics var1) {
 		if (this == gameEngine && !isKilled) {
 			this.fullRedraw = true;
-			if (Occluder.method4335() - this.field210 > 1000L) {
+			if (Occluder.getServerTime() - this.field210 > 1000L) {
 				Rectangle var2 = var1.getClipBounds();
 				if (var2 == null || var2.width >= InvDefinition.canvasWidth && var2.height >= canvasHeight) {
 					this.isCanvasInvalid = true;
@@ -906,7 +906,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
 	public final void stop() {
 		if (this == gameEngine && !isKilled) {
-			stopTimeMs = Occluder.method4335() + 4000L;
+			stopTimeMs = Occluder.getServerTime() + 4000L;
 		}
 	}
 
@@ -950,7 +950,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
 			class122.clock = (Clock)var8;
 
-			while (stopTimeMs == 0L || Occluder.method4335() < stopTimeMs) {
+			while (stopTimeMs == 0L || Occluder.getServerTime() < stopTimeMs) {
 				gameCyclesToDo = class122.clock.wait(cycleDurationMillis, fiveOrOne);
 
 				for (int var5 = 0; var5 < gameCyclesToDo; ++var5) {

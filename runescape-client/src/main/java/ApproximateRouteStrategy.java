@@ -614,7 +614,7 @@ public class ApproximateRouteStrategy extends RouteStrategy {
 						String var24 = "";
 						var5 = "";
 						var6 = "";
-						switch(Login.field874) {
+						switch(Login.Login_banType) {
 						case 0:
 							var24 = "Your account has been disabled.";
 							var5 = Strings.field3400;

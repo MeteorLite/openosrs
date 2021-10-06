@@ -121,7 +121,8 @@ public final class Occluder {
 		descriptor = "(B)J",
 		garbageValue = "1"
 	)
-	public static final synchronized long method4335() {
+	@Export("getServerTime")
+	public static final synchronized long getServerTime() {
 		long var0 = System.currentTimeMillis();
 		if (var0 < class396.field4262) {
 			class396.field4261 += class396.field4262 - var0;

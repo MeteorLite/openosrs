@@ -213,7 +213,7 @@ public class Varcs {
 		}
 
 		this.unwrittenChanges = false;
-		this.field1263 = Occluder.method4335();
+		this.field1263 = Occluder.getServerTime();
 	}
 
 	@ObfuscatedName("e")
@@ -300,7 +300,7 @@ public class Varcs {
 	)
 	@Export("tryWrite")
 	void tryWrite() {
-		if (this.unwrittenChanges && this.field1263 < Occluder.method4335() - 60000L) {
+		if (this.unwrittenChanges && this.field1263 < Occluder.getServerTime() - 60000L) {
 			this.write();
 		}
 
