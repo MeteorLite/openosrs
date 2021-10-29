@@ -1895,6 +1895,16 @@ public interface Client extends GameEngine
 	int getOculusOrbFocalPointY();
 
 	/**
+	 * Sets local X coord where the camera is pointing when the Oculus orb is active
+	 */
+	void setOculusOrbFocalPointX(int xPos);
+
+	/**
+	 * Sets local Y coord where the camera is pointing when the Oculus orb is active
+	 */
+	void setOculusOrbFocalPointY(int yPos);
+
+	/**
 	 * Opens in-game world hopper interface
 	 */
 	void openWorldHopper();
@@ -2327,4 +2337,6 @@ public interface Client extends GameEngine
 	 */
 	@Nullable
 	ClanSettings getClanSettings(int clanId);
+
+	void setUnlockedFps(boolean unlock);
 }
