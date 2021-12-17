@@ -34,17 +34,17 @@ public interface RSClanSettings extends ClanSettings
 	String getName();
 
 	@Import("memberCount")
-	int getMemberCount();
+	int getMemberCount$api();
 
 	@Import("memberNames")
-	String[] getMemberNames();
+	String[] getMemberNames$api();
 
 	@Import("memberRanks")
-	byte[] getMemberRanks();
+	byte[] getMemberRanks$api();
 
 	@Import("getSortedMembers")
-	int[] getSortedMembers();
+	int[] getSortedMembers$api();
 
 	@Import("getTitleGroupValue")
-	Integer getTitleGroupValue(int group);
+	Integer getTitleGroupValue$api(int group);
 }

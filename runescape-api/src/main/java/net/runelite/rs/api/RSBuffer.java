@@ -16,43 +16,43 @@ public interface RSBuffer extends Buffer, RSNode
 
 	@Import("writeByte")
 	@Override
-	void writeByte(int var1);
+	void writeByte$api(int var1);
 
 	@Import("writeShort")
 	@Override
-	void writeShort(int var1);
+	void writeShort$api(int var1);
 
 	@Import("writeMedium")
 	@Override
-	void writeMedium(int var1);
+	void writeMedium$api(int var1);
 
 	@Import("writeInt")
 	@Override
-	void writeInt(int var1);
+	void writeInt$api(int var1);
 
 	@Import("writeLong")
 	@Override
-	void writeLong(long var1);
+	void writeLong$api(long var1);
 
 	@Import("writeStringCp1252NullTerminated")
 	@Override
-	void writeStringCp1252NullTerminated(String string);
+	void writeStringCp1252NullTerminated$api(String string);
 
 	@Import("readUnsignedByte")
-	int readUnsignedByte();
+	int readUnsignedByte$api();
 
 	@Import("readByte")
-	byte readByte();
+	byte readByte$api();
 
 	@Import("readUnsignedShort")
-	int readUnsignedShort();
+	int readUnsignedShort$api();
 
 	@Import("readShort")
-	int readShort();
+	int readShort$api();
 
 	@Import("readInt")
-	int readInt();
+	int readInt$api();
 
 	@Import("readStringCp1252NullTerminated")
-	String readStringCp1252NullTerminated();
+	String readStringCp1252NullTerminated$api();
 }

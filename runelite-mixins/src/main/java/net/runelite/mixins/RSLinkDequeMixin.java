@@ -34,18 +34,18 @@ public abstract class RSLinkDequeMixin implements RSLinkDeque
 {
 	@Inject
 	@Override
-	public void clear()
+	public void clear$api()
 	{
 		while (true)
 		{
-			RSLink rsLink = getSentinel().getPrevious();
+			RSLink rsLink = getSentinel().getPrevious$api();
 			if (rsLink == getSentinel())
 			{
 				setCurrent(null);
 				return;
 			}
 
-			rsLink.remove();
+			rsLink.remove$api();
 		}
 	}
 }

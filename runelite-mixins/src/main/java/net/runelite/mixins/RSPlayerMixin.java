@@ -172,15 +172,15 @@ public abstract class RSPlayerMixin implements RSPlayer
 			return null;
 		}
 
-		int[] x2d = new int[model.getVerticesCount()];
-		int[] y2d = new int[model.getVerticesCount()];
+		int[] x2d = new int[model.getVerticesCount$api()];
+		int[] y2d = new int[model.getVerticesCount$api()];
 
 		int localX = getX();
 		int localY = getY();
 
 		final int tileHeight = Perspective.getTileHeight(client, new LocalPoint(localX, localY), client.getPlane());
 
-		Perspective.modelToCanvas(client, model.getVerticesCount(), localX, localY, tileHeight, getOrientation(), model.getVerticesX(), model.getVerticesZ(), model.getVerticesY(), x2d, y2d);
+		Perspective.modelToCanvas(client, model.getVerticesCount$api(), localX, localY, tileHeight, getOrientation(), model.getVerticesX$api(), model.getVerticesZ$api(), model.getVerticesY$api(), x2d, y2d);
 		ArrayList polys = new ArrayList(model.getFaceCount());
 
 		int[] trianglesX = model.getFaceIndices1();

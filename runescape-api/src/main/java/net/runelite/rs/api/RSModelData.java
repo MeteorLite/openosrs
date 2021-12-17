@@ -5,62 +5,62 @@ import net.runelite.mapping.Import;
 public interface RSModelData extends RSRenderable
 {
 	@Import("faceCount")
-	int getTriangleFaceCount();
+	int getTriangleFaceCount$api();
 
 	@Import("indices1")
-	int[] getTrianglePointsX();
+	int[] getTrianglePointsX$api();
 
 	@Import("indices2")
-	int[] getTrianglePointsY();
+	int[] getTrianglePointsY$api();
 
 	@Import("indices3")
-	int[] getTrianglePointsZ();
+	int[] getTrianglePointsZ$api();
 
 	@Import("verticesX")
-	int[] getVertexX();
+	int[] getVertexX$api();
 
 	@Import("verticesY")
-	int[] getVertexY();
+	int[] getVertexY$api();
 
 	@Import("verticesZ")
-	int[] getVertexZ();
+	int[] getVertexZ$api();
 
 	@Import("texTriangleX")
-	short[] getTexTriangleX();
+	short[] getTexTriangleX$api();
 
 	@Import("texTriangleY")
-	short[] getTexTriangleY();
+	short[] getTexTriangleY$api();
 
 	@Import("texTriangleZ")
-	short[] getTexTriangleZ();
+	short[] getTexTriangleZ$api();
 
 	@Import("faceTextures")
-	short[] getFaceTextures();
+	short[] getFaceTextures$api();
 
 	@Import("textureCoords")
-	byte[] getTextureCoords();
+	byte[] getTextureCoords$api();
 
 	@Import("textureRenderTypes")
-	byte[] getTextureRenderTypes();
+	byte[] getTextureRenderTypes$api();
 
 	@Import("verticesCount")
-	int getVerticesCount();
+	int getVerticesCount$api();
 
 	@Import("vertexNormals")
-	RSVertexNormal[] getVertexNormals();
+	RSVertexNormal[] getVertexNormals$api();
 
 	@Import("vertexVertices")
-	RSVertexNormal[] getVertexVertices();
+	RSVertexNormal[] getVertexVertices$api();
 
 	@Import("recolor")
-	void recolor(short var1, short var2);
+	void recolor$api(short var1, short var2);
 
 	@Import("toModel")
-	RSModel toModel(int var1, int var2, int var3, int var4, int var5);
+	RSModel toModel$api(int var1, int var2, int var3, int var4, int var5);
 
 	@Import("ambient")
-	short getAmbient();
+	short getAmbient$api();
 
 	@Import("contrast")
-	short getContrast();
+	short getContrast$api();
 }

@@ -36,9 +36,9 @@ public abstract class ParamHolderMixin implements ParamHolder
 	private void setParam(int id, RSNode node)
 	{
 		RSParamComposition comp = client.getRSParamComposition(id);
-		if (comp.isString() != (node instanceof RSObjectNode))
+		if (comp.isString$api() != (node instanceof RSObjectNode))
 		{
-			if (comp.isString())
+			if (comp.isString$api())
 			{
 				throw new IllegalArgumentException("trying to put int into string param");
 			}
@@ -71,12 +71,12 @@ public abstract class ParamHolderMixin implements ParamHolder
 		else
 		{
 			RSParamComposition comp = client.getRSParamComposition(paramID);
-			if (comp.isString())
+			if (comp.isString$api())
 			{
 				throw new IllegalArgumentException("trying to get int from string param");
 			}
 
-			return comp.getDefaultInt();
+			return comp.getDefaultInt$api();
 		}
 	}
 
@@ -100,12 +100,12 @@ public abstract class ParamHolderMixin implements ParamHolder
 		else
 		{
 			RSParamComposition comp = client.getRSParamComposition(paramID);
-			if (!comp.isString())
+			if (!comp.isString$api())
 			{
 				throw new IllegalArgumentException("trying to get string from int param");
 			}
 
-			return comp.getDefaultStr();
+			return comp.getDefaultStr$api();
 		}
 	}
 

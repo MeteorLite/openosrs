@@ -1,5 +1,11 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Lucas <https://github.com/Lucwousin>
+ * All rights reserved.
+ *
+ * This code is licensed under GPL3, see the complete license in
+ * the LICENSE file in the root directory of this submodule.
+ *
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +28,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package com.openosrs.injector.injectors;
 
-/**
- * Represents a player in the chat.
+import com.openosrs.injector.injection.InjectData;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.Field;
+import net.runelite.asm.Method;
+
+/*
+ * This handles creating "virtual" annotations to clean up rs-client in the main project
  */
-public interface ChatPlayer extends Nameable
-{
-	int getWorld$api();
+public class RemoveAnnotations extends AbstractInjector {
+
+  public RemoveAnnotations(InjectData inject) {
+    super(inject);
+  }
+
+  public void inject() {
+    for (final ClassFile deobClass : inject.getVanilla()) {
+      injectFields(deobClass);
+      injectMethods(deobClass);
+
+      deobClass.getAnnotations().clear();
+    }
+  }
+
+  private void injectFields(ClassFile deobClass) {
+    for (Field deobField : deobClass.getFields()) {
+      deobField.getAnnotations().clear();
+    }
+  }
+
+  private void injectMethods(ClassFile deobClass) {
+    for (Method deobMethod : deobClass.getMethods()) {
+      deobMethod.getAnnotations().clear();
+    }
+  }
 }

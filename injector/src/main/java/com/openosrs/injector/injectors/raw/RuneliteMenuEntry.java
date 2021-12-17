@@ -10,8 +10,6 @@ package com.openosrs.injector.injectors.raw;
 import com.openosrs.injector.InjectUtil;
 import com.openosrs.injector.injection.InjectData;
 import com.openosrs.injector.injectors.AbstractInjector;
-import java.util.List;
-import java.util.ListIterator;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
@@ -27,73 +25,70 @@ import net.runelite.asm.attributes.code.instructions.New;
 import net.runelite.asm.attributes.code.instructions.Return;
 import net.runelite.asm.signature.Signature;
 
+import java.util.List;
+import java.util.ListIterator;
+
 public class RuneliteMenuEntry extends AbstractInjector
 {
-	private static final String RUNELITE_MENU_ENTRY = "RuneLiteMenuEntry";
+    private static final String RUNELITE_MENU_ENTRY = "RuneLiteMenuEntry";
 
-	public RuneliteMenuEntry(InjectData inject)
-	{
-		super(inject);
-	}
+    public RuneliteMenuEntry(InjectData inject)
+    {
+        super(inject);
+    }
 
-	public void inject()
-	{
-		addInvoke();
-		addSwap(InjectUtil.findMethod(inject, "incrementMenuEntries"));
-		addSwap(InjectUtil.findMethod(inject, "decrementMenuEntries"));
-	}
+    public void inject()
+    {
+        addInvoke();
+        addSwap(InjectUtil.findMethod(inject, "incrementMenuEntries"));
+        addSwap(InjectUtil.findMethod(inject, "decrementMenuEntries"));
+    }
 
-	private void addInvoke()
-	{
-		ClassFile runeliteMenuEntryVanilla = inject.vanilla.findClass(RUNELITE_MENU_ENTRY);
+    private void addInvoke()
+    {
+        ClassFile runeliteMenuEntryVanilla = inject.vanilla.findClass(RUNELITE_MENU_ENTRY);
 
-		final ClassFile clientVanilla = inject.toVanilla(
-			inject.getDeobfuscated()
-				.findClass("Client")
-		);
+        final ClassFile clientVanilla = inject.vanilla.findClass("Client");
 
-		Method copy = clientVanilla.findMethod("newRuneliteMenuEntry");
-		copy.setPublic();
+        Method copy = clientVanilla.findMethod("newRuneliteMenuEntry");
+        copy.setPublic();
 
-		final Code code = new Code(copy);
-		code.setMaxStack(3);
-		copy.setCode(code);
+        final Code code = new Code(copy);
+        code.setMaxStack(3);
+        copy.setCode(code);
 
-		final Instructions instructions = code.getInstructions();
-		final List<Instruction> ins = instructions.getInstructions();
+        final Instructions instructions = code.getInstructions();
+        final List<Instruction> ins = instructions.getInstructions();
 
-		ins.add(new New(instructions, runeliteMenuEntryVanilla.getPoolClass()));
-		ins.add(new Dup(instructions));
-		ins.add(new ILoad(instructions, 0));
-		ins.add(new InvokeSpecial(instructions, new net.runelite.asm.pool.Method(runeliteMenuEntryVanilla.getPoolClass(), "<init>", new Signature("(I)V"))));
-		ins.add(new Return(instructions, InstructionType.ARETURN));
-	}
+        ins.add(new New(instructions, runeliteMenuEntryVanilla.getPoolClass()));
+        ins.add(new Dup(instructions));
+        ins.add(new ILoad(instructions, 0));
+        ins.add(new InvokeSpecial(instructions, new net.runelite.asm.pool.Method(runeliteMenuEntryVanilla.getPoolClass(), "<init>", new Signature("(I)V"))));
+        ins.add(new Return(instructions, InstructionType.ARETURN));
+    }
 
-	private void addSwap(Method method)
-	{
-		final ClassFile clientVanilla = inject.toVanilla(
-			inject.getDeobfuscated()
-				.findClass("Client")
-		);
+    private void addSwap(Method method)
+    {
+        final ClassFile clientVanilla = inject.vanilla.findClass("Client");
 
-		Instructions ins = method.getCode().getInstructions();
-		ListIterator<Instruction> iterator = ins.getInstructions().listIterator();
-		while (iterator.hasNext())
-		{
-			Instruction i = iterator.next();
+        Instructions ins = method.getCode().getInstructions();
+        ListIterator<Instruction> iterator = ins.getInstructions().listIterator();
+        while (iterator.hasNext())
+        {
+            Instruction i = iterator.next();
 
-			if (!(i instanceof BAStore))
-			{
-				continue;
-			}
+            if (!(i instanceof BAStore))
+            {
+                continue;
+            }
 
-			ILoad i1 = new ILoad(ins, 2);
-			InvokeStatic i2 = new InvokeStatic(ins, new net.runelite.asm.pool.Method(clientVanilla.getPoolClass(), "swapMenuEntries", new Signature("(I)V")));
+            ILoad i1 = new ILoad(ins, 2);
+            InvokeStatic i2 = new InvokeStatic(ins, new net.runelite.asm.pool.Method(clientVanilla.getPoolClass(), "swapMenuEntries", new Signature("(I)V")));
 
-			iterator.add(i1);
-			iterator.add(i2);
+            iterator.add(i1);
+            iterator.add(i2);
 
-			return;
-		}
-	}
+            return;
+        }
+    }
 }

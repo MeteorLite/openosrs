@@ -358,7 +358,7 @@ class SceneUploader
 		}
 
 		model.setBufferOffset(offset);
-		if (model.getFaceTextures() != null)
+		if (model.getFaceTextures$api() != null)
 		{
 			model.setUvBufferOffset(uvoffset);
 		}
@@ -371,7 +371,7 @@ class SceneUploader
 		int len = pushModel(model, vertexBuffer, uvBuffer);
 
 		offset += len;
-		if (model.getFaceTextures() != null)
+		if (model.getFaceTextures$api() != null)
 		{
 			uvoffset += len;
 		}
@@ -384,28 +384,28 @@ class SceneUploader
 		vertexBuffer.ensureCapacity(triangleCount * 12);
 		uvBuffer.ensureCapacity(triangleCount * 12);
 
-		final int[] vertexX = model.getVerticesX();
-		final int[] vertexY = model.getVerticesY();
-		final int[] vertexZ = model.getVerticesZ();
+		final int[] vertexX = model.getVerticesX$api();
+		final int[] vertexY = model.getVerticesY$api();
+		final int[] vertexZ = model.getVerticesZ$api();
 
 		final int[] indices1 = model.getFaceIndices1();
 		final int[] indices2 = model.getFaceIndices2();
 		final int[] indices3 = model.getFaceIndices3();
 
-		final int[] color1s = model.getFaceColors1();
-		final int[] color2s = model.getFaceColors2();
-		final int[] color3s = model.getFaceColors3();
+		final int[] color1s = model.getFaceColors1$api();
+		final int[] color2s = model.getFaceColors2$api();
+		final int[] color3s = model.getFaceColors3$api();
 
 		final byte[] transparencies = model.getFaceTransparencies();
-		final short[] faceTextures = model.getFaceTextures();
+		final short[] faceTextures = model.getFaceTextures$api();
 		final byte[] facePriorities = model.getFaceRenderPriorities();
 
 		float[] uv = model.getFaceTextureUVCoordinates();
 
-		final byte overrideAmount = model.getOverrideAmount();
-		final byte overrideHue = model.getOverrideHue();
-		final byte overrideSat = model.getOverrideSaturation();
-		final byte overrideLum = model.getOverrideLuminance();
+		final byte overrideAmount = model.getOverrideAmount$api();
+		final byte overrideHue = model.getOverrideHue$api();
+		final byte overrideSat = model.getOverrideSaturation$api();
+		final byte overrideLum = model.getOverrideLuminance$api();
 
 		int len = 0;
 		for (int face = 0; face < triangleCount; ++face)
@@ -469,20 +469,20 @@ class SceneUploader
 	int pushFace(Model model, int face, boolean padUvs, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer,
 		int xOffset, int yOffset, int zOffset, int orientation)
 	{
-		final int[] vertexX = model.getVerticesX();
-		final int[] vertexY = model.getVerticesY();
-		final int[] vertexZ = model.getVerticesZ();
+		final int[] vertexX = model.getVerticesX$api();
+		final int[] vertexY = model.getVerticesY$api();
+		final int[] vertexZ = model.getVerticesZ$api();
 
 		final int[] indices1 = model.getFaceIndices1();
 		final int[] indices2 = model.getFaceIndices2();
 		final int[] indices3 = model.getFaceIndices3();
 
-		final int[] color1s = model.getFaceColors1();
-		final int[] color2s = model.getFaceColors2();
-		final int[] color3s = model.getFaceColors3();
+		final int[] color1s = model.getFaceColors1$api();
+		final int[] color2s = model.getFaceColors2$api();
+		final int[] color3s = model.getFaceColors3$api();
 
 		final byte[] transparencies = model.getFaceTransparencies();
-		final short[] faceTextures = model.getFaceTextures();
+		final short[] faceTextures = model.getFaceTextures$api();
 		final byte[] facePriorities = model.getFaceRenderPriorities();
 
 		final int triangleA = indices1[face];
@@ -493,10 +493,10 @@ class SceneUploader
 		int color2 = color2s[face];
 		int color3 = color3s[face];
 
-		final byte overrideAmount = model.getOverrideAmount();
-		final byte overrideHue = model.getOverrideHue();
-		final byte overrideSat = model.getOverrideSaturation();
-		final byte overrideLum = model.getOverrideLuminance();
+		final byte overrideAmount = model.getOverrideAmount$api();
+		final byte overrideHue = model.getOverrideHue$api();
+		final byte overrideSat = model.getOverrideSaturation$api();
+		final byte overrideLum = model.getOverrideLuminance$api();
 
 		int packedAlphaPriority = packAlphaPriority(faceTextures, transparencies, facePriorities, face);
 

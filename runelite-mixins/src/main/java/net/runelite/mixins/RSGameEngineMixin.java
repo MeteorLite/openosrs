@@ -97,10 +97,10 @@ public abstract class RSGameEngineMixin implements RSGameEngine
 	public void onReplaceCanvasNextFrameChanged(int idx)
 	{
 		// when this is initially called the client instance doesn't exist yet
-		if (client != null && client.isGpu() && isReplaceCanvasNextFrame())
+		if (client != null && client.isGpu() && isReplaceCanvasNextFrame$api())
 		{
-			setReplaceCanvasNextFrame(false);
-			setResizeCanvasNextFrame(true);
+			setReplaceCanvasNextFrame$api(false);
+			setResizeCanvasNextFrame$api(true);
 		}
 	}
 
@@ -118,7 +118,7 @@ public abstract class RSGameEngineMixin implements RSGameEngine
 	{
 		if (client != null && client.isGpu())
 		{
-			setFullRedraw(false);
+			setFullRedraw$api(false);
 			return;
 		}
 

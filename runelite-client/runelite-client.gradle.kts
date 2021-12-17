@@ -137,6 +137,7 @@ tasks {
     }
 
     processResources {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         finalizedBy("filterResources")
     }
 

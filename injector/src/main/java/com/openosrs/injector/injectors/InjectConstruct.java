@@ -34,8 +34,6 @@ import com.openosrs.injector.InjectException;
 import com.openosrs.injector.InjectUtil;
 import com.openosrs.injector.injection.InjectData;
 import com.openosrs.injector.rsapi.RSApiMethod;
-import java.util.List;
-import java.util.stream.Collectors;
 import net.runelite.asm.Annotation;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Type;
@@ -50,100 +48,97 @@ import net.runelite.asm.attributes.code.instructions.Return;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.pool.Method;
 import net.runelite.asm.signature.Signature;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.openosrs.injector.rsapi.RSApi.CONSTRUCT;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 
-public class InjectConstruct extends AbstractInjector
-{
-	private int injected = 0;
+public class InjectConstruct extends AbstractInjector {
 
-	public InjectConstruct(InjectData inject)
-	{
-		super(inject);
-	}
+  private int injected = 0;
 
-	@Override
-	public void inject()
-	{
-		for (RSApiMethod apiMethod : inject.getRsApi().getConstructs())
-		{
-			Annotation construct = apiMethod.findAnnotation(CONSTRUCT);
-			if (construct == null)
-			{
-				continue;
-			}
+  public InjectConstruct(InjectData inject) {
+    super(inject);
+  }
 
-			final Method method = apiMethod.getMethod();
-			final Class clazz = method.getClazz();
-			final ClassFile deobClass = inject.toDeob(clazz.getName());
-			final ClassFile vanillaClass = inject.toVanilla(deobClass);
+  @Override
+  public void inject() {
+    for (RSApiMethod apiMethod : inject.getRsApi().getConstructs()) {
+      Annotation construct = apiMethod.findAnnotation(CONSTRUCT);
+      if (construct == null) {
+        continue;
+      }
 
-			injectConstruct(vanillaClass, method);
-			apiMethod.setInjected(true);
-			injected++;
-		}
+      final Method method = apiMethod.getMethod();
+      final Class clazz = method.getClazz();
+      final ClassFile deobClass = inject.toDeob(clazz.getName());
+      final ClassFile vanillaClass = inject.toVanilla(deobClass);
 
-		log.info("[INFO] Injected {} constructors", injected);
-	}
+      injectConstruct(vanillaClass, method);
+      apiMethod.setInjected(true);
+      injected++;
+    }
 
-	private void injectConstruct(ClassFile targetClass, Method apiMethod)
-	{
-		log.debug("[DEBUG] Injecting constructor for {} into {}", apiMethod, targetClass.getPoolClass());
+    //log.info("[INFO] Injected {} constructors", injected);
+  }
 
-		final Type returnval = apiMethod.getType().getReturnValue();
+  private void injectConstruct(ClassFile targetClass, Method apiMethod) {
+    //log.debug("[DEBUG] Injecting constructor for {} into {}", apiMethod, targetClass.getPoolClass());
 
-		final ClassFile deobClass = inject.toDeob(returnval.getInternalName());
-		final ClassFile classToConstruct = inject.toVanilla(deobClass);
+    final Type returnval = apiMethod.getType().getReturnValue();
 
-		Signature constr = new Signature.Builder()
-			.addArguments(apiMethod.getType().getArguments().stream()
-				.map(t -> InjectUtil.apiToDeob(inject, t))
-				.map(t -> InjectUtil.deobToVanilla(inject, t))
-				.collect(Collectors.toList()))
-			.setReturnType(Type.VOID)
-			.build();
+    final ClassFile deobClass = inject.toDeob(returnval.getInternalName());
+    final ClassFile classToConstruct = inject.toVanilla(deobClass);
 
-		final net.runelite.asm.Method constructor = classToConstruct.findMethod("<init>", constr);
-		if (constructor == null)
-		{
-			throw new InjectException("Unable to find constructor for " + classToConstruct.getName() + ".<init>" + constr);
-		}
+    Signature constr = new Signature.Builder()
+        .addArguments(apiMethod.getType().getArguments().stream()
+            .map(t -> InjectUtil.apiToDeob(inject, t))
+            .map(t -> InjectUtil.deobToVanilla(inject, t))
+            .collect(Collectors.toList()))
+        .setReturnType(Type.VOID)
+        .build();
 
+    final net.runelite.asm.Method constructor = classToConstruct.findMethod("<init>", constr);
+    if (constructor == null) {
+      throw new InjectException(
+          "Unable to find constructor for " + classToConstruct.getName() + ".<init>" + constr);
+    }
 
-		net.runelite.asm.Method setterMethod = new net.runelite.asm.Method(targetClass, apiMethod.getName(), apiMethod.getType());
-		setterMethod.setAccessFlags(ACC_PUBLIC);
-		targetClass.addMethod(setterMethod);
+    net.runelite.asm.Method setterMethod = new net.runelite.asm.Method(targetClass,
+        apiMethod.getName(), apiMethod.getType());
+    setterMethod.setAccessFlags(ACC_PUBLIC);
+    targetClass.addMethod(setterMethod);
 
-		final Code code = new Code(setterMethod);
-		setterMethod.setCode(code);
+    final Code code = new Code(setterMethod);
+    setterMethod.setCode(code);
 
-		final Instructions instructions = code.getInstructions();
-		final List<Instruction> ins = instructions.getInstructions();
+    final Instructions instructions = code.getInstructions();
+    final List<Instruction> ins = instructions.getInstructions();
 
-		ins.add(new New(instructions, classToConstruct.getPoolClass()));
-		ins.add(new Dup(instructions));
+    ins.add(new New(instructions, classToConstruct.getPoolClass()));
+    ins.add(new Dup(instructions));
 
-		int idx = 1;
-		int parameter = 0;
+    int idx = 1;
+    int parameter = 0;
 
-		for (Type type : constructor.getDescriptor().getArguments())
-		{
-			Instruction load = InjectUtil.createLoadForTypeIndex(instructions, type, idx);
-			idx += type.getSize();
-			ins.add(load);
+    for (Type type : constructor.getDescriptor().getArguments()) {
+      Instruction load = InjectUtil.createLoadForTypeIndex(instructions, type, idx);
+      idx += type.getSize();
+      ins.add(load);
 
-			Type paramType = apiMethod.getType().getTypeOfArg(parameter);
-			if (!type.equals(paramType))
-			{
-				CheckCast checkCast = new CheckCast(instructions);
-				checkCast.setType(type);
-				ins.add(checkCast);
-			}
+      Type paramType = apiMethod.getType().getTypeOfArg(parameter);
+      if (!type.equals(paramType)) {
+        CheckCast checkCast = new CheckCast(instructions);
+        checkCast.setType(type);
+        ins.add(checkCast);
+      }
 
-			++parameter;
-		}
+      ++parameter;
+    }
 
-		ins.add(new InvokeSpecial(instructions, constructor.getPoolMethod()));
-		ins.add(new Return(instructions));
-	}
+    ins.add(new InvokeSpecial(instructions, constructor.getPoolMethod()));
+    ins.add(new Return(instructions));
+  }
 }

@@ -32,19 +32,19 @@ public interface RSModel extends RSRenderable, Model
 {
 	@Import("verticesCount")
 	@Override
-	int getVerticesCount();
+	int getVerticesCount$api();
 
 	@Import("verticesX")
 	@Override
-	int[] getVerticesX();
+	int[] getVerticesX$api();
 
 	@Import("verticesY")
 	@Override
-	int[] getVerticesY();
+	int[] getVerticesY$api();
 
 	@Import("verticesZ")
 	@Override
-	int[] getVerticesZ();
+	int[] getVerticesZ$api();
 
 	@Import("indicesCount")
 	@Override
@@ -64,15 +64,15 @@ public interface RSModel extends RSRenderable, Model
 
 	@Import("faceColors1")
 	@Override
-	int[] getFaceColors1();
+	int[] getFaceColors1$api();
 
 	@Import("faceColors2")
 	@Override
-	int[] getFaceColors2();
+	int[] getFaceColors2$api();
 
 	@Import("faceColors3")
 	@Override
-	int[] getFaceColors3();
+	int[] getFaceColors3$api();
 
 	@Import("faceAlphas")
 	@Override
@@ -94,14 +94,14 @@ public interface RSModel extends RSRenderable, Model
 
 	@Import("calculateBoundsCylinder")
 	@Override
-	void calculateBoundsCylinder();
+	void calculateBoundsCylinder$api();
 
 	@Import("calculateBoundingBox")
 	@Override
 	void calculateExtreme(int orientation);
 
 	@Import("resetBounds")
-	void resetBounds();
+	void resetBounds$api();
 
 	@Import("toSharedSequenceModel")
 	RSModel toSharedModel(boolean b);
@@ -110,17 +110,17 @@ public interface RSModel extends RSRenderable, Model
 	RSModel toSharedSpotAnimModel(boolean b);
 
 	@Import("rotateY90Ccw")
-	void rotateY90Ccw();
+	void rotateY90Ccw$api();
 
 	@Import("rotateY180")
 	void rotateY180Ccw();
 
 	@Import("rotateY270Ccw")
-	void rotateY270Ccw();
+	void rotateY270Ccw$api();
 
 	@Import("radius")
 	@Override
-	int getRadius();
+	int getRadius$api();
 
 	@Import("xMid")
 	@Override
@@ -148,7 +148,7 @@ public interface RSModel extends RSRenderable, Model
 
 	@Import("faceTextures")
 	@Override
-	short[] getFaceTextures();
+	short[] getFaceTextures$api();
 
 	@Import("xzRadius")
 	@Override
@@ -160,11 +160,11 @@ public interface RSModel extends RSRenderable, Model
 
 	@Import("bottomY")
 	@Override
-	int getBottomY();;
+	int getBottomY$api();;
 	
 	@Import("drawFace")
 	@Override
-	void drawFace(int face);
+	void drawFace$api(int face);
 
 	void interpolateFrames(RSFrames frames, int frameId, RSFrames nextFrames, int nextFrameId, int interval, int intervalCount);
 
@@ -187,17 +187,17 @@ public interface RSModel extends RSRenderable, Model
 
 	@Import("overrideAmount")
 	@Override
-	byte getOverrideAmount();
+	byte getOverrideAmount$api();
 
 	@Import("overrideHue")
 	@Override
-	byte getOverrideHue();
+	byte getOverrideHue$api();
 
 	@Import("overrideSaturation")
 	@Override
-	byte getOverrideSaturation();
+	byte getOverrideSaturation$api();
 
 	@Import("overrideLuminance")
 	@Override
-	byte getOverrideLuminance();
+	byte getOverrideLuminance$api();
 }

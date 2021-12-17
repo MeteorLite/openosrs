@@ -27,8 +27,8 @@ public abstract class StretchedModeMaxSizeMixin implements RSGameEngine
 			{
 				Dimension realDimensions = client.getRealDimensions();
 
-				setMaxCanvasWidth(realDimensions.width);
-				setMaxCanvasHeight(realDimensions.height);
+				setMaxCanvasWidth$api(realDimensions.width);
+				setMaxCanvasHeight$api(realDimensions.height);
 			}
 		}
 

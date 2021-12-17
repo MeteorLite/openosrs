@@ -77,7 +77,7 @@ import okhttp3.Response;
 @SuppressWarnings("deprecation")
 public class ClientLoader implements Supplier<Applet>
 {
-	private static final String INJECTED_CLIENT_NAME = "/injected-client.oprs";
+	private static final String INJECTED_CLIENT_NAME = "/injected-client.osrs";
 	private static final int NUM_ATTEMPTS = 0;
 	private static File LOCK_FILE = new File(RuneLite.CACHE_DIR, "cache.lock");
 	private static File VANILLA_CACHE = new File(RuneLite.CACHE_DIR, "vanilla.cache");
@@ -155,11 +155,11 @@ public class ClientLoader implements Supplier<Applet>
 					}
 				}
 
-				if (!checkVanillaHash())
-				{
-					log.error("Injected client vanilla hash doesn't match, loading vanilla client.");
-					updateCheckMode = VANILLA;
-				}
+//				if (!checkVanillaHash())
+//				{
+//					log.error("Injected client vanilla hash doesn't match, loading vanilla client.");
+//					updateCheckMode = VANILLA;
+//				}
 
 				SplashScreen.stage(.40, null, "Loading client");
 

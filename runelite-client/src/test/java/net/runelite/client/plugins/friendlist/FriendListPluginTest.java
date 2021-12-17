@@ -86,7 +86,7 @@ public class FriendListPluginTest
 		chatMessage.setMessageNode(messageNode);
 
 		Friend friend = mock(Friend.class);
-		when(friend.getWorld()).thenReturn(311);
+		when(friend.getWorld$api()).thenReturn(311);
 
 		FriendContainer friendContainer = mock(FriendContainer.class);
 		when(friendContainer.findByName("test\u00a0rsn")).thenReturn(friend);

@@ -179,4 +179,31 @@ public class JarUtil
 			logger.warn("Class {} failed validation", name, ex);
 		}
 	}
+
+	public static ClassGroup addReflection(ClassGroup group, File jarfile) {
+		try (JarFile jar = new JarFile(jarfile)) {
+			for (Enumeration<JarEntry> it = jar.entries(); it.hasMoreElements(); ) {
+				JarEntry entry = it.nextElement();
+
+				if (!entry.getName().contains("net/runelite/rs/Reflection")) {
+					continue;
+				}
+
+				InputStream is = jar.getInputStream(entry);
+
+				ClassReader reader = new ClassReader(is);
+				ClassFileVisitor cv = new ClassFileVisitor();
+
+				reader.accept(cv, ClassReader.SKIP_FRAMES);
+
+				group.addClass(cv.getClassFile());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		group.initialize();
+
+		return group;
+	}
 }

@@ -125,7 +125,7 @@ public abstract class RSSequenceDefinitionMixin implements RSSequenceDefinition
 		rotation &= 3;
 		if (rotation == 1)
 		{
-			animatedModel.rotateY270Ccw();
+			animatedModel.rotateY270Ccw$api();
 		}
 		else if (rotation == 2)
 		{
@@ -133,14 +133,14 @@ public abstract class RSSequenceDefinitionMixin implements RSSequenceDefinition
 		}
 		else if (rotation == 3)
 		{
-			animatedModel.rotateY90Ccw();
+			animatedModel.rotateY90Ccw$api();
 		}
 		animatedModel.interpolateFrames(frames, frameIdx, nextFrames, nextFrameIdx, interval,
 			getFrameLengths()[frame]);
 		// reapply rotation after animating
 		if (rotation == 1)
 		{
-			animatedModel.rotateY90Ccw();
+			animatedModel.rotateY90Ccw$api();
 		}
 		else if (rotation == 2)
 		{
@@ -148,7 +148,7 @@ public abstract class RSSequenceDefinitionMixin implements RSSequenceDefinition
 		}
 		else if (rotation == 3)
 		{
-			animatedModel.rotateY270Ccw();
+			animatedModel.rotateY270Ccw$api();
 		}
 		return animatedModel;
 	}

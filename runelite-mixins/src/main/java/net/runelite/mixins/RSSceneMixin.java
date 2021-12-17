@@ -800,7 +800,7 @@ public abstract class RSSceneMixin implements RSScene
 			groundItems[plane][sceneX][sceneY] = client.newNodeDeque();
 		}
 
-		groundItems[plane][sceneX][sceneY].addFirst(item);
+		groundItems[plane][sceneX][sceneY].addFirst$api(item);
 
 		if (plane == client.getPlane())
 		{
@@ -828,7 +828,7 @@ public abstract class RSSceneMixin implements RSScene
 			return;
 		}
 
-		for (RSTileItem item = (RSTileItem) items.last(); item != null; item = (RSTileItem) items.previous())
+		for (RSTileItem item = (RSTileItem) items.last$api(); item != null; item = (RSTileItem) items.previous$api())
 		{
 			if (item.getId() == id && quantity == 1)
 			{
@@ -837,7 +837,7 @@ public abstract class RSSceneMixin implements RSScene
 			}
 		}
 
-		if (items.last() == null)
+		if (items.last$api() == null)
 		{
 			client.getGroundItemDeque()[plane][sceneX][sceneY] = null;
 		}
@@ -1129,10 +1129,10 @@ public abstract class RSSceneMixin implements RSScene
 	{
 		Tile[][][] tiles = getTiles();
 		RSNodeDeque tilesDeque = client.getTilesDeque();
-		tilesDeque.addFirst((RSNode) var1);
+		tilesDeque.addFirst$api((RSNode) var1);
 
 		RSTile rsTile;
-		while ((rsTile = (RSTile) tilesDeque.removeLast()) != null)
+		while ((rsTile = (RSTile) tilesDeque.removeLast$api()) != null)
 		{
 			int x = rsTile.getX();
 			int y = rsTile.getY();
@@ -1171,7 +1171,7 @@ public abstract class RSSceneMixin implements RSScene
 			Tile tile = tiles[plane][x][y];
 			if (tile != null)
 			{
-				rsNodeDeque.addFirst((RSNode) tile);
+				rsNodeDeque.addFirst$api((RSNode) tile);
 			}
 		}
 	}

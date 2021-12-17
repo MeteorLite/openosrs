@@ -76,7 +76,7 @@ public abstract class RSModelMixin implements RSModel
 	@Inject
 	public void rl$init(RSModel[] models, int length)
 	{
-		if (getFaceTextures() != null)
+		if (getFaceTextures$api() != null)
 		{
 			int count = getFaceCount();
 			float[] uv = new float[count * 6];
@@ -108,13 +108,13 @@ public abstract class RSModelMixin implements RSModel
 	@Inject
 	public List<Vertex> getVertices()
 	{
-		int[] verticesX = getVerticesX();
-		int[] verticesY = getVerticesY();
-		int[] verticesZ = getVerticesZ();
+		int[] verticesX = getVerticesX$api();
+		int[] verticesY = getVerticesY$api();
+		int[] verticesZ = getVerticesZ$api();
 
-		List<Vertex> vertices = new ArrayList<Vertex>(getVerticesCount());
+		List<Vertex> vertices = new ArrayList<Vertex>(getVerticesCount$api());
 
-		for (int i = 0; i < getVerticesCount(); ++i)
+		for (int i = 0; i < getVerticesCount$api(); ++i)
 		{
 			Vertex v = new Vertex(
 				verticesX[i],
@@ -220,7 +220,7 @@ public abstract class RSModelMixin implements RSModel
 				client.setAnimOffsetZ(0);
 
 				interpolateFrames(skeleton, frame, nextFrame, interval, intervalCount);
-				resetBounds();
+				resetBounds$api();
 			}
 		}
 	}
@@ -333,10 +333,10 @@ public abstract class RSModelMixin implements RSModel
 	@Inject
 	public Shape getConvexHull(int localX, int localY, int orientation, int tileHeight)
 	{
-		int[] x2d = new int[getVerticesCount()];
-		int[] y2d = new int[getVerticesCount()];
+		int[] x2d = new int[getVerticesCount$api()];
+		int[] y2d = new int[getVerticesCount$api()];
 
-		Perspective.modelToCanvas(client, getVerticesCount(), localX, localY, tileHeight, orientation, getVerticesX(), getVerticesZ(), getVerticesY(), x2d, y2d);
+		Perspective.modelToCanvas(client, getVerticesCount$api(), localX, localY, tileHeight, orientation, getVerticesX$api(), getVerticesZ$api(), getVerticesY$api(), x2d, y2d);
 
 		return Jarvis.convexHull(x2d, y2d);
 	}
@@ -402,7 +402,7 @@ public abstract class RSModelMixin implements RSModel
 	{
 		if (rl$vertexNormalsX == null)
 		{
-			int verticesCount = getVerticesCount();
+			int verticesCount = getVerticesCount$api();
 
 			rl$vertexNormalsX = new int[verticesCount];
 			rl$vertexNormalsY = new int[verticesCount];
@@ -411,9 +411,9 @@ public abstract class RSModelMixin implements RSModel
 			int[] trianglesX = getFaceIndices1();
 			int[] trianglesY = getFaceIndices2();
 			int[] trianglesZ = getFaceIndices3();
-			int[] verticesX = getVerticesX();
-			int[] verticesY = getVerticesY();
-			int[] verticesZ = getVerticesZ();
+			int[] verticesX = getVerticesX$api();
+			int[] verticesY = getVerticesY$api();
+			int[] verticesZ = getVerticesZ$api();
 
 			for (int i = 0; i < getFaceCount(); ++i)
 			{

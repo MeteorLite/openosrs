@@ -17,14 +17,14 @@ public abstract class RSUserMixin implements RSUser
 
 	@Override
 	@Inject
-	public String getName()
+	public String getName$api()
 	{
 		return getRsName().getName();
 	}
 
 	@Override
 	@Inject
-	public String getPrevName()
+	public String getPrevName$api()
 	{
 		RSUsername prevName = getRsPrevName();
 		return prevName == null ? null : prevName.getName();

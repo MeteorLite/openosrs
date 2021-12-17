@@ -74,7 +74,7 @@ public abstract class RSMessageMixin implements RSMessage
 
 	@Inject
 	@Override
-	public boolean isFromClanMate()
+	public boolean isFromClanMate$api()
 	{
 		RSFriendsChat cc = client.getFriendsChatManager();
 

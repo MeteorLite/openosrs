@@ -1,17 +1,8 @@
-/*
- * Copyright (c) 2021, Owain van Brakel <https://github.com/Owain94>
- * All rights reserved.
- *
- * This code is licensed under GPL3, see the complete license in
- * the LICENSE file in the root directory of this submodule.
- */
 package com.openosrs.injector.injectors.raw;
 
 import com.openosrs.injector.InjectUtil;
 import com.openosrs.injector.injection.InjectData;
 import com.openosrs.injector.injectors.AbstractInjector;
-import java.util.List;
-import java.util.ListIterator;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
@@ -19,7 +10,6 @@ import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.instructions.CheckCast;
 import net.runelite.asm.attributes.code.instructions.GetField;
 import net.runelite.asm.attributes.code.instructions.GetStatic;
 import net.runelite.asm.attributes.code.instructions.InvokeSpecial;
@@ -32,14 +22,17 @@ import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
 import org.objectweb.asm.Opcodes;
 
+import java.util.List;
+import java.util.ListIterator;
+
 public class CopyRuneLiteClasses extends AbstractInjector
 {
 	private static final List<String> RUNELITE_OBJECTS = List.of(
-		"RuneLiteObject",
-		"RuneLiteIterableLinkDeque",
-		"RuneLiteIterableNodeDeque",
-		"RuneLiteIterableNodeHashTable",
-		"RuneLiteMenuEntry"
+			"RuneLiteObject",
+			"RuneLiteIterableLinkDeque",
+			"RuneLiteIterableNodeDeque",
+			"RuneLiteIterableNodeHashTable",
+			"RuneLiteMenuEntry"
 	);
 
 	public CopyRuneLiteClasses(InjectData inject)
@@ -54,7 +47,7 @@ public class CopyRuneLiteClasses extends AbstractInjector
 			ClassFile runeliteObjectVanilla = inject.vanilla.findClass(className);
 
 			final ClassFile runeLiteObjectDeob = inject.getDeobfuscated()
-				.findClass(className);
+							.findClass(className);
 
 			if (runeliteObjectVanilla == null)
 			{
@@ -229,11 +222,6 @@ public class CopyRuneLiteClasses extends AbstractInjector
 					{
 						iterator.set(new New(ins, inject.toVanilla(deobClass)));
 					}
-				}
-				else if (i instanceof CheckCast)
-				{
-					CheckCast clazz = ((CheckCast) i);
-					iterator.set(new CheckCast(ins, getObfuscatedSignature(clazz.getType_())));
 				}
 			}
 		}

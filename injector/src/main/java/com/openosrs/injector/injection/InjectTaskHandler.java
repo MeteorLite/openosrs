@@ -10,10 +10,10 @@ package com.openosrs.injector.injection;
 /**
  * Interface containing all the methods gradle needs to know about
  */
-public interface InjectTaskHandler
-{
-	/**
-	 * The actual method that does all the work
-	 */
-	void injectVanilla();
+public interface InjectTaskHandler {
+
+  /**
+   * The actual method that does all the work
+   */
+  void injectVanilla();
 }

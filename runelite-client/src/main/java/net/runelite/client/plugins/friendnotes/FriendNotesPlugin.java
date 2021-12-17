@@ -282,8 +282,8 @@ public class FriendNotesPlugin extends Plugin
 		if (nameable instanceof Friend || nameable instanceof Ignore)
 		{
 			// Migrate a friend's note to their new display name
-			String name = nameable.getName();
-			String prevName = nameable.getPrevName();
+			String name = nameable.getName$api();
+			String prevName = nameable.getPrevName$api();
 
 			if (prevName != null)
 			{
@@ -299,7 +299,7 @@ public class FriendNotesPlugin extends Plugin
 	public void onRemovedFriend(RemovedFriend event)
 	{
 		// Delete a friend's note if they are removed
-		final String displayName = Text.toJagexName(event.getNameable().getName());
+		final String displayName = Text.toJagexName(event.getNameable().getName$api());
 		log.debug("Remove friend: '{}'", displayName);
 		setFriendNote(displayName, null);
 	}

@@ -46,9 +46,9 @@ public abstract class RSClanSettingsMixin implements RSClanSettings
 	@Override
 	public List<ClanMember> getMembers()
 	{
-		int memberCount = getMemberCount();
-		String[] memberNames = getMemberNames();
-		byte[] memberRanks = getMemberRanks();
+		int memberCount = getMemberCount$api();
+		String[] memberNames = getMemberNames$api();
+		byte[] memberRanks = getMemberRanks$api();
 		List<ClanMember> memberList = new ArrayList<>(memberCount);
 
 		for (int i = 0; i < memberCount; i++)
@@ -64,9 +64,9 @@ public abstract class RSClanSettingsMixin implements RSClanSettings
 	public ClanMember findMember(String name)
 	{
 		name = name.replace(" ", "\u00A0").toLowerCase();
-		String[] memberNames = getMemberNames();
-		byte[] memberRanks = getMemberRanks();
-		int[] sorted = getSortedMembers();
+		String[] memberNames = getMemberNames$api();
+		byte[] memberRanks = getMemberRanks$api();
+		int[] sorted = getSortedMembers$api();
 
 		int i = 0;
 		int len = sorted.length - 1;
@@ -200,7 +200,7 @@ public abstract class RSClanSettingsMixin implements RSClanSettings
 	@Inject
 	private int getTitle(int group, int sub1, int sub2)
 	{
-		Integer oParam = getTitleGroupValue(group);
+		Integer oParam = getTitleGroupValue$api(group);
 		int param = oParam == null ? -1 : oParam;
 		int offset = 31 - sub2;
 		return (param << offset) >>> (sub1 + offset);

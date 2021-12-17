@@ -233,7 +233,7 @@ public class MusicPlugin extends Plugin
 			if (musicConfig.muteAmbientSounds())
 			{
 				client.getAmbientSoundEffects()
-					.clear();
+					.clear$api();
 			}
 		}
 	}

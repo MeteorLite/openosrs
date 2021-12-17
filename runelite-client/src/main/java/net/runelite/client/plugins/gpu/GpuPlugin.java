@@ -435,7 +435,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				client.setGpu(true);
 
 				// force rebuild of main buffer provider to enable alpha channel
-				client.resizeCanvas();
+				client.resizeCanvas$api();
 
 				lastCanvasWidth = lastCanvasHeight = -1;
 				lastStretchedCanvasWidth = lastStretchedCanvasHeight = -1;
@@ -539,7 +539,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			lastAnisotropicFilteringLevel = -1;
 
 			// force main buffer provider rebuild to turn off alpha channel
-			client.resizeCanvas();
+			client.resizeCanvas$api();
 		});
 	}
 
@@ -1527,10 +1527,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	 */
 	private boolean isVisible(Model model, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z)
 	{
-		model.calculateBoundsCylinder();
+		model.calculateBoundsCylinder$api();
 
 		final int xzMag = model.getXYZMag();
-		final int bottomY = model.getBottomY();
+		final int bottomY = model.getBottomY$api();
 		final int zoom = client.get3dZoom();
 		final int modelHeight = model.getModelHeight();
 
@@ -1614,7 +1614,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				drawingModel = true;
 
-				renderable.draw(orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+				renderable.draw$api(orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
 
 				drawingModel = false;
 			}
@@ -1643,7 +1643,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			buffer.put(uvOffset);
 			buffer.put(tc);
 			buffer.put(targetBufferOffset);
-			buffer.put(FLAG_SCENE_BUFFER | (model.getRadius() << 12) | orientation);
+			buffer.put(FLAG_SCENE_BUFFER | (model.getRadius$api() << 12) | orientation);
 			buffer.put(x + client.getCameraX2()).put(y + client.getCameraY2()).put(z + client.getCameraZ2());
 
 			targetBufferOffset += tc * 3;
@@ -1668,7 +1668,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				model.calculateExtreme(orientation);
 				client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
 
-				boolean hasUv = model.getFaceTextures() != null;
+				boolean hasUv = model.getFaceTextures$api() != null;
 
 				int len = sceneUploader.pushModel(model, vertexBuffer, uvBuffer);
 
@@ -1680,7 +1680,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				buffer.put(hasUv ? tempUvOffset : -1);
 				buffer.put(len / 3);
 				buffer.put(targetBufferOffset);
-				buffer.put((model.getRadius() << 12) | orientation);
+				buffer.put((model.getRadius$api() << 12) | orientation);
 				buffer.put(x + client.getCameraX2()).put(y + client.getCameraY2()).put(z + client.getCameraZ2());
 
 				tempOffset += len;

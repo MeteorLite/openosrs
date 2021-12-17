@@ -34,30 +34,30 @@ public interface RSGameEngine extends GameEngine
 	Canvas getCanvas();
 
 	@Import("post")
-	void post(Object canvas);
+	void post$api(Object canvas);
 
 	@Import("resizeCanvas")
 	@Override
-	void resizeCanvas();
+	void resizeCanvas$api();
 
 	@Import("resizeCanvasNextFrame")
-	boolean isResizeCanvasNextFrame();
+	boolean isResizeCanvasNextFrame$api();
 
 	@Import("resizeCanvasNextFrame")
-	void setResizeCanvasNextFrame(boolean resize);
+	void setResizeCanvasNextFrame$api(boolean resize);
 
 	@Import("isCanvasInvalid")
-	boolean isReplaceCanvasNextFrame();
+	boolean isReplaceCanvasNextFrame$api();
 
 	@Import("isCanvasInvalid")
-	void setReplaceCanvasNextFrame(boolean replace);
+	void setReplaceCanvasNextFrame$api(boolean replace);
 
 	@Import("maxCanvasWidth")
-	void setMaxCanvasWidth(int width);
+	void setMaxCanvasWidth$api(int width);
 
 	@Import("maxCanvasHeight")
-	void setMaxCanvasHeight(int height);
+	void setMaxCanvasHeight$api(int height);
 
 	@Import("fullRedraw")
-	void setFullRedraw(boolean fullRedraw);
+	void setFullRedraw$api(boolean fullRedraw);
 }

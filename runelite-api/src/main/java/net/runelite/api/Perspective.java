@@ -725,7 +725,7 @@ public class Perspective
 		if (ex == -1)
 		{
 			// dynamic models don't get stored when they render where this normally happens
-			m.calculateBoundsCylinder();
+			m.calculateBoundsCylinder$api();
 			m.calculateExtreme(0);
 			ex = m.getExtremeX();
 		}
@@ -768,15 +768,15 @@ public class Perspective
 
 	private static Shapes<SimplePolygon> calculate2DBounds(Client client, Model m, int jauOrient, int x, int y, int z)
 	{
-		int[] x2d = new int[m.getVerticesCount()];
-		int[] y2d = new int[m.getVerticesCount()];
-		final int[] faceColors3 = m.getFaceColors3();
+		int[] x2d = new int[m.getVerticesCount$api()];
+		int[] y2d = new int[m.getVerticesCount$api()];
+		final int[] faceColors3 = m.getFaceColors3$api();
 
 		Perspective.modelToCanvas(client,
-			m.getVerticesCount(),
+			m.getVerticesCount$api(),
 			x, y, z,
 			jauOrient,
-			m.getVerticesX(), m.getVerticesZ(), m.getVerticesY(),
+			m.getVerticesX$api(), m.getVerticesZ$api(), m.getVerticesY$api(),
 			x2d, y2d);
 
 		final int radius = 5;

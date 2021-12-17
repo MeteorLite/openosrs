@@ -378,14 +378,14 @@ public class WorldHopperPlugin extends Plugin
 			ChatPlayer player = getChatPlayerFromName(event.getTarget());
 			WorldResult worldResult = worldService.getWorlds();
 
-			if (player == null || player.getWorld() == 0 || player.getWorld() == client.getWorld()
+			if (player == null || player.getWorld$api() == 0 || player.getWorld$api() == client.getWorld()
 					|| worldResult == null)
 			{
 				return;
 			}
 
 			World currentWorld = worldResult.findWorld(client.getWorld());
-			World targetWorld = worldResult.findWorld(player.getWorld());
+			World targetWorld = worldResult.findWorld(player.getWorld$api());
 			if (targetWorld == null || currentWorld == null
 					|| (!currentWorld.getTypes().contains(WorldType.PVP) && targetWorld.getTypes().contains(WorldType.PVP)))
 			{
@@ -403,7 +403,7 @@ public class WorldHopperPlugin extends Plugin
 
 					if (p != null)
 					{
-						hop(p.getWorld());
+						hop(p.getWorld$api());
 					}
 				});
 		}

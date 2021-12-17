@@ -301,7 +301,7 @@ public class TeamPlugin extends Plugin
 			{
 				for (ClanChannelMember member : clanChannel.getMembers())
 				{
-					final String memberName = Text.toJagexName(member.getName());
+					final String memberName = Text.toJagexName(member.getName$api());
 
 					final Player player = players.get(memberName);
 					if (player != null)
@@ -320,9 +320,9 @@ public class TeamPlugin extends Plugin
 	{
 		final FriendsChatMember member = event.getMember();
 
-		if (member.getWorld() == client.getWorld())
+		if (member.getWorld$api() == client.getWorld())
 		{
-			final String memberName = Text.toJagexName(member.getName());
+			final String memberName = Text.toJagexName(member.getName$api());
 
 			final Player player = players.get(memberName);
 			if (player != null)
@@ -338,9 +338,9 @@ public class TeamPlugin extends Plugin
 	{
 		final FriendsChatMember member = event.getMember();
 
-		if (member.getWorld() == client.getWorld())
+		if (member.getWorld$api() == client.getWorld())
 		{
-			final String memberName = Text.toJagexName(member.getName());
+			final String memberName = Text.toJagexName(member.getName$api());
 			final Player player = players.get(memberName);
 			if (player != null)
 			{
@@ -360,9 +360,9 @@ public class TeamPlugin extends Plugin
 	{
 		final ClanChannelMember member = clanMemberJoined.getClanMember();
 
-		if (member.getWorld() == client.getWorld())
+		if (member.getWorld$api() == client.getWorld())
 		{
-			final String memberName = Text.toJagexName(member.getName());
+			final String memberName = Text.toJagexName(member.getName$api());
 
 			final Player player = players.get(memberName);
 			if (player != null)
@@ -378,9 +378,9 @@ public class TeamPlugin extends Plugin
 	{
 		final ClanChannelMember member = clanMemberLeft.getClanMember();
 
-		if (member.getWorld() == client.getWorld())
+		if (member.getWorld$api() == client.getWorld())
 		{
-			final String memberName = Text.toJagexName(member.getName());
+			final String memberName = Text.toJagexName(member.getName$api());
 			final Player player = players.get(memberName);
 			if (player != null)
 			{

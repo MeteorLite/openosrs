@@ -4,14 +4,14 @@ import net.runelite.mapping.Import;
 
 public interface RSParamComposition
 {
-	boolean isString();
+	boolean isString$api();
 
 	@Import("type")
-	char getType();
+	char getType$api();
 
 	@Import("defaultInt")
-	int getDefaultInt();
+	int getDefaultInt$api();
 
 	@Import("defaultStr")
-	String getDefaultStr();
+	String getDefaultStr$api();
 }

@@ -18,8 +18,8 @@ public interface RSFriendSystem
 	boolean isIgnored(RSUsername var1);
 
 	@Import("addFriend")
-	void addFriend(String username);
+	void addFriend$api(String username);
 
 	@Import("removeFriend")
-	void removeFriend(String username);
+	void removeFriend$api(String username);
 }

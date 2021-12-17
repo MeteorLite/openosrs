@@ -58,18 +58,18 @@ public abstract class ClickboxMixin implements RSClient
 		}
 
 		// otherwise we must check if the mouse is in a triangle
-		final int vertexCount = model.getVerticesCount();
+		final int vertexCount = model.getVerticesCount$api();
 		final int triangleCount = model.getFaceCount();
 
-		final int[] vertexX = model.getVerticesX();
-		final int[] vertexY = model.getVerticesY();
-		final int[] vertexZ = model.getVerticesZ();
+		final int[] vertexX = model.getVerticesX$api();
+		final int[] vertexY = model.getVerticesY$api();
+		final int[] vertexZ = model.getVerticesZ$api();
 
 		final int[] triangleX = model.getFaceIndices1();
 		final int[] triangleY = model.getFaceIndices2();
 		final int[] triangleZ = model.getFaceIndices3();
 
-		final int[] color3 = model.getFaceColors3();
+		final int[] color3 = model.getFaceColors3$api();
 
 		final int zoom = client.get3dZoom();
 

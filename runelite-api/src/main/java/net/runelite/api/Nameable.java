@@ -34,12 +34,12 @@ public interface Nameable extends Comparable<Nameable>
 	 *
 	 * @return the name
 	 */
-	String getName();
+	String getName$api();
 
 	/**
 	 * The previous name the player had.
 	 *
 	 * @return the previous name
 	 */
-	String getPrevName();
+	String getPrevName$api();
 }

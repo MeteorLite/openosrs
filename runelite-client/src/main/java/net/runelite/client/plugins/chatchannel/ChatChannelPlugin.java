@@ -433,7 +433,7 @@ public class ChatChannelPlugin extends Plugin
 		}
 		message
 			.append("] ")
-			.append(textColor, member.getName() + activityMessage);
+			.append(textColor, member.getName$api() + activityMessage);
 
 		final String messageString = message.build();
 		final MessageNode line = client.addChatMessage(ChatMessageType.FRIENDSCHATNOTIFICATION, "", messageString, "");
@@ -480,7 +480,7 @@ public class ChatChannelPlugin extends Plugin
 		{
 			message.img(rankIcon);
 		}
-		message.append(textColor, member.getName() + (activityType == ActivityType.JOINED ? " has joined." : " has left."));
+		message.append(textColor, member.getName$api() + (activityType == ActivityType.JOINED ? " has joined." : " has left."));
 
 		final String messageString = message.build();
 		final MessageNode line = client.addChatMessage(

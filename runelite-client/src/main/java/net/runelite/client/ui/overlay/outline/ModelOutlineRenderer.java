@@ -523,12 +523,12 @@ public class ModelOutlineRenderer
 	 */
 	private boolean projectVertices(Model model, int localX, int localY, int localZ, final int vertexOrientation)
 	{
-		final int vertexCount = model.getVerticesCount();
+		final int vertexCount = model.getVerticesCount$api();
 		Perspective.modelToCanvas(client,
 			vertexCount,
 			localX, localY, localZ,
 			vertexOrientation,
-			model.getVerticesX(), model.getVerticesZ(), model.getVerticesY(),
+			model.getVerticesX$api(), model.getVerticesZ$api(), model.getVerticesY$api(),
 			projectedVerticesX, projectedVerticesY);
 
 		boolean anyVisible = false;

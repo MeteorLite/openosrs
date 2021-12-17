@@ -9,7 +9,6 @@ package com.openosrs.injector.injectors.raw;
 
 import com.openosrs.injector.injection.InjectData;
 import com.openosrs.injector.injectors.AbstractInjector;
-import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
@@ -21,6 +20,8 @@ import net.runelite.asm.attributes.code.instructions.InvokeSpecial;
 import net.runelite.asm.attributes.code.instructions.New;
 import net.runelite.asm.attributes.code.instructions.Return;
 import net.runelite.asm.signature.Signature;
+
+import java.util.List;
 
 public class RuneliteObject extends AbstractInjector
 {
@@ -35,10 +36,7 @@ public class RuneliteObject extends AbstractInjector
 	{
 		ClassFile runeliteObjectVanilla = inject.vanilla.findClass(RUNELITE_OBJECT);
 
-		final ClassFile clientVanilla = inject.toVanilla(
-			inject.getDeobfuscated()
-				.findClass("Client")
-		);
+		final ClassFile clientVanilla = inject.vanilla.findClass("Client");
 
 		Method copy = new Method(clientVanilla, "createRuneLiteObject", new Signature("()Lnet/runelite/api/RuneLiteObject;"));
 		copy.setPublic();

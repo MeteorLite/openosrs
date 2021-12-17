@@ -8,15 +8,8 @@
 package com.openosrs.injector;
 
 import com.openosrs.injector.injection.InjectData;
-import static com.openosrs.injector.rsapi.RSApi.API_BASE;
-import static com.openosrs.injector.rsapi.RSApi.RL_API_BASE;
 import com.openosrs.injector.rsapi.RSApiClass;
 import com.openosrs.injector.rsapi.RSApiMethod;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import net.runelite.asm.Annotation;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
@@ -46,553 +39,530 @@ import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.deobfuscators.arithmetic.DMath;
 import org.jetbrains.annotations.Nullable;
 
-public interface InjectUtil
-{
-	/**
-	 * Finds a static method in deob and converts it to ob
-	 *
-	 * @param data InjectData instance
-	 * @param name The name of the method you want to find
-	 * @return The obfuscated version of the found method
-	 */
-	static Method findMethod(InjectData data, String name)
-	{
-		return findMethod(data, name, null, null);
-	}
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-	/**
-	 * Finds a static method in deob and converts it to ob
-	 *
-	 * @param data      InjectData instance
-	 * @param name      The name of the method you want to find
-	 * @param classHint The name of the class you expect the method to be in, or null
-	 * @param sig       The signature the method has in deob, or null
-	 * @return The obfuscated version of the found method
-	 */
-	static Method findMethod(
-		InjectData data,
-		String name,
-		String classHint,
-		@Nullable Predicate<Signature> sig)
-	{
-		return findMethod(data, name, classHint, sig, false, false);
-	}
+import static com.openosrs.injector.rsapi.RSApi.API_BASE;
+import static com.openosrs.injector.rsapi.RSApi.RL_API_BASE;
 
-	/**
-	 * Finds a method in injectData's deobfuscated classes.
-	 *
-	 * @param data      InjectData instance
-	 * @param name      (Exported) method name
-	 * @param classHint The (exported) name of a class you expect (or know) the method to be in, or null, if you're not sure
-	 * @throws InjectException If the hint class couldn't be found, or no method matching the settings was found
-	 */
-	static Method findMethod(
-		InjectData data,
-		String name,
-		@Nullable String classHint)
-		throws InjectException
-	{
-		return findMethod(data, name, classHint, null, false, false);
-	}
+public interface InjectUtil {
 
-	/**
-	 * Finds a method in injectData's deobfuscated classes.
-	 *
-	 * @param data       InjectData instance
-	 * @param name       (Exported) method name
-	 * @param classHint  The (exported) name of a class you expect (or know) the method to be in, or null, if you're not sure
-	 * @param sig        The deobfuscated methods' signature, or null, if you're unsure
-	 * @param notStatic  If this is true, only check non-static methods. If classHint isn't null, check only subclasses
-	 * @param returnDeob If this is true, this method will return the deobfuscated method, instead of turning it into vanilla first
-	 * @throws InjectException If the hint class couldn't be found, or no method matching the settings was found
-	 */
-	static Method findMethod(
-		InjectData data,
-		String name,
-		@Nullable String classHint,
-		@Nullable Predicate<Signature> sig,
-		boolean notStatic,
-		boolean returnDeob)
-		throws InjectException
-	{
-		final ClassGroup deob = data.getDeobfuscated();
-		if (classHint != null)
-		{
-			ClassFile cf;
-			Method m;
-			cf = findClassOrThrow(deob, classHint);
-			if (notStatic)
-			{
-				if (sig == null)
-				{
-					m = InjectUtil.findMethodDeep(cf, name, s -> true);
-				}
-				else
-				{
-					m = InjectUtil.findMethodDeep(cf, name, sig);
-				}
-			}
-			else
-			{
-				m = cf.findMethod(name);
-			}
+  /**
+   * Finds a static method in deob and converts it to ob
+   *
+   * @param data InjectData instance
+   * @param name The name of the method you want to find
+   * @return The obfuscated version of the found method
+   */
+  static Method findMethod(InjectData data, String name) {
+    return findMethod(data, name, null, null);
+  }
 
-			if (m != null)
-			{
-				return returnDeob ? m : data.toVanilla(m);
-			}
-		}
+  /**
+   * Finds a static method in deob and converts it to ob
+   *
+   * @param data      InjectData instance
+   * @param name      The name of the method you want to find
+   * @param classHint The name of the class you expect the method to be in, or null
+   * @param sig       The signature the method has in deob, or null
+   * @return The obfuscated version of the found method
+   */
+  static Method findMethod(
+      InjectData data,
+      String name,
+      String classHint,
+      @Nullable Predicate<Signature> sig) {
+    return findMethod(data, name, classHint, sig, false, false);
+  }
 
-		for (ClassFile cf : deob)
-		{
-			for (Method m : cf.getMethods())
-			{
-				if (m.getName().equals(name))
-				{
-					if (!notStatic || !m.isStatic())
-					{
-						if (sig == null || sig.test(m.getDescriptor()))
-						{
-							return returnDeob ? m : data.toVanilla(m);
-						}
-					}
-				}
-			}
-		}
+  /**
+   * Finds a method in injectData's deobfuscated classes.
+   *
+   * @param data      InjectData instance
+   * @param name      (Exported) method name
+   * @param classHint The (exported) name of a class you expect (or know) the method to be in, or
+   *                  null, if you're not sure
+   * @throws InjectException If the hint class couldn't be found, or no method matching the settings
+   *                         was found
+   */
+  static Method findMethod(
+      InjectData data,
+      String name,
+      @Nullable String classHint)
+      throws InjectException {
+    return findMethod(data, name, classHint, null, false, false);
+  }
 
-		throw new InjectException(String.format("Couldn't find %s", name));
-	}
+  /**
+   * Finds a method in injectData's deobfuscated classes.
+   *
+   * @param data       InjectData instance
+   * @param name       (Exported) method name
+   * @param classHint  The (exported) name of a class you expect (or know) the method to be in, or
+   *                   null, if you're not sure
+   * @param sig        The deobfuscated methods' signature, or null, if you're unsure
+   * @param notStatic  If this is true, only check non-static methods. If classHint isn't null,
+   *                   check only subclasses
+   * @param returnDeob If this is true, this method will return the deobfuscated method, instead of
+   *                   turning it into vanilla first
+   * @throws InjectException If the hint class couldn't be found, or no method matching the settings
+   *                         was found
+   */
+  static Method findMethod(
+      InjectData data,
+      String name,
+      @Nullable String classHint,
+      @Nullable Predicate<Signature> sig,
+      boolean notStatic,
+      boolean returnDeob)
+      throws InjectException {
+    final ClassGroup deob = data.getDeobfuscated();
+    if (classHint != null) {
+      ClassFile cf;
+      Method m;
+      cf = findClassOrThrow(deob, classHint);
+      if (notStatic) {
+        if (sig == null) {
+          m = InjectUtil.findMethodDeep(cf, name, s -> true);
+        } else {
+          m = InjectUtil.findMethodDeep(cf, name, sig);
+        }
+      } else {
+        m = cf.findMethod(name);
+      }
 
-	static ClassFile findClassOrThrow(ClassGroup group, String name)
-	{
-		ClassFile clazz = group.findClass(name);
-		if (clazz == null)
-		{
-			throw new InjectException("Hint class " + name + " doesn't exist");
-		}
+      if (m != null) {
+        return returnDeob ? m : data.toVanilla(m);
+      }
+    }
 
-		return clazz;
-	}
+    for (ClassFile cf : deob) {
+      for (Method m : cf.getMethods()) {
+        if (m.getName().equals(name)) {
+          if (!notStatic || !m.isStatic()) {
+            Signature s = new Signature(m.getDescriptor().toString().replace("", ""));
+            if (sig == null || sig.test(s)) {
+              return returnDeob ? m : data.toVanilla(m);
+            }
+          }
+        }
+      }
+    }
 
-	/**
-	 * Fail-fast implementation of ClassFile.findMethodDeep, using a predicate for signature
-	 */
-	static Method findMethodDeep(ClassFile clazz, String name, Predicate<Signature> type)
-	{
-		do
-		{
-			for (Method method : clazz.getMethods())
-			{
-				if (method.getName().equals(name))
-				{
-					if (type.test(method.getDescriptor()))
-					{
-						return method;
-					}
-				}
-			}
-		}
-		while ((clazz = clazz.getParent()) != null);
+    throw new InjectException(String.format("Couldn't find %s", name));
+  }
 
-		throw new InjectException(String.format("Method %s couldn't be found", name + type.toString()));
-	}
+  static ClassFile findClassOrThrow(ClassGroup group, String name) {
+    ClassFile clazz = group.findClass("" + name);
+    if (clazz == null) {
+      clazz = group.findClass(name);
+      if (clazz == null) {
+        throw new InjectException("Hint class " + name + " doesn't exist");
+      }
+    }
 
-	/**
-	 * Fail-fast implementation of ClassGroup.findStaticField
-	 * <p>
-	 * well...
-	 */
-	static Field findStaticField(ClassGroup group, String name)
-	{
-		for (ClassFile clazz : group)
-		{
-			Field f = clazz.findField(name);
-			if (f != null && f.isStatic())
-			{
-				return f;
-			}
-		}
+    return clazz;
+  }
 
-		throw new InjectException("Couldn't find static field " + name);
-	}
+  /**
+   * Fail-fast implementation of ClassFile.findMethodDeep, using a predicate for signature
+   */
+  static Method findMethodDeep(ClassFile clazz, String name, Predicate<Signature> type) {
+    do {
+      for (Method method : clazz.getMethods()) {
+        if (method.getName().equals(name)) {
+          Signature s = new Signature(method.getDescriptor().toString().replace("", ""));
+          if (type.test(s)) {
+            return method;
+          }
+        }
+      }
+    }
+    while ((clazz = clazz.getParent()) != null);
 
-	/**
-	 * Finds a static field in deob and converts it to ob
-	 *
-	 * @param data      InjectData instance
-	 * @param name      The name of the field you want to find
-	 * @param classHint The name of the class you expect the field to be in, or null
-	 * @param type      The type the method has in deob, or null
-	 * @return The obfuscated version of the found field
-	 */
-	static Field findStaticField(InjectData data, String name, String classHint, Type type)
-	{
-		final ClassGroup deob = data.getDeobfuscated();
-		Field field;
+    throw new InjectException(String.format("Method %s couldn't be found", name + type.toString()));
+  }
 
-		if (classHint != null)
-		{
-			ClassFile clazz = findClassOrThrow(deob, classHint);
+  /**
+   * Fail-fast implementation of ClassGroup.findStaticField
+   * <p>
+   * well...
+   */
+  static Field findStaticField(ClassGroup group, String name) {
+    for (ClassFile clazz : group) {
+      Field f = clazz.findField(name);
+      if (f != null && f.isStatic()) {
+        return f;
+      }
+    }
 
-			if (type == null)
-			{
-				field = clazz.findField(name);
-			}
-			else
-			{
-				field = clazz.findField(name, type);
-			}
+    throw new InjectException("Couldn't find static field " + name);
+  }
 
-			if (field != null)
-			{
-				return field;
-			}
-		}
+  /**
+   * Finds a static field in deob and converts it to ob
+   *
+   * @param data      InjectData instance
+   * @param name      The name of the field you want to find
+   * @param classHint The name of the class you expect the field to be in, or null
+   * @param type      The type the method has in deob, or null
+   * @return The obfuscated version of the found field
+   */
+  static Field findStaticField(InjectData data, String name, String classHint, Type type) {
+    final ClassGroup deob = data.getDeobfuscated();
+    Field field;
 
-		for (ClassFile clazz : deob)
-		{
-			if (type == null)
-			{
-				field = clazz.findField(name);
-			}
-			else
-			{
-				field = clazz.findField(name, type);
-			}
+    if (classHint != null) {
+      ClassFile clazz = findClassOrThrow(deob, classHint);
 
-			if (field != null)
-			{
-				return field;
-			}
-		}
+      if (type == null) {
+        field = clazz.findField(name);
+      } else {
+        field = clazz.findField(name, type);
+      }
 
-		throw new InjectException(String.format("Static field %s doesn't exist", (type != null ? type + " " : "") + name));
-	}
+      if (field != null) {
+        return field;
+      }
+    }
 
-	/**
-	 * Fail-fast implementation of ClassGroup.findFieldDeep
-	 */
-	static Field findFieldDeep(ClassFile clazz, String name)
-	{
-		Field f;
+    for (ClassFile clazz : deob) {
+      if (type == null) {
+        field = clazz.findField(name);
+      } else {
+        field = clazz.findField(name, type);
+      }
 
-		do
-		{
-			if ((f = clazz.findField(name)) != null)
-			{
-				return f;
-			}
-		}
-		while ((clazz = clazz.getParent()) != null);
+      if (field != null) {
+        return field;
+      }
+    }
+    String s = type.toString().replaceFirst("L", "L");
+    type = Type.getType(s, 0);
+    if (classHint != null) {
+      ClassFile clazz = findClassOrThrow(deob, classHint);
 
-		throw new InjectException("Couldn't find field " + name);
-	}
+      if (type == null) {
+        field = clazz.findField(name);
+      } else {
+        field = clazz.findField(name, type);
+      }
 
-	static Field findField(InjectData data, String name, String hintClass)
-	{
-		final ClassGroup deob = data.getDeobfuscated();
-		return data.toVanilla(findField(deob, name, hintClass));
-	}
+      if (field != null) {
+        return field;
+      }
+    }
 
-	static Field findField(ClassGroup group, String name, String hintClass)
-	{
-		Field field;
-		if (hintClass != null)
-		{
-			ClassFile clazz = findClassOrThrow(group, hintClass);
+    for (ClassFile clazz : deob) {
+      if (type == null) {
+        field = clazz.findField(name);
+      } else {
+        field = clazz.findField(name, type);
+      }
 
-			field = clazz.findField(name);
-			if (field != null)
-			{
-				return field;
-			}
-		}
+      if (field != null) {
+        return field;
+      }
+    }
 
-		for (ClassFile clazz : group)
-		{
-			if ((field = clazz.findField(name)) != null)
-			{
-				return field;
-			}
-		}
+    throw new InjectException(
+        String.format("Static field %s doesn't exist", (type != null ? type + " " : "") + name));
+  }
 
-		throw new InjectException("Field " + name + " doesn't exist");
-	}
+  /**
+   * Fail-fast implementation of ClassGroup.findFieldDeep
+   */
+  static Field findFieldDeep(ClassFile clazz, String name) {
+    Field f;
 
-	static ClassFile deobFromApiMethod(InjectData data, RSApiMethod apiMethod)
-	{
-		return data.toDeob(apiMethod.getClazz().getName());
-	}
+    do {
+      if ((f = clazz.findField(name)) != null) {
+        return f;
+      }
+    }
+    while ((clazz = clazz.getParent()) != null);
 
-	static ClassFile vanillaFromApiMethod(InjectData data, RSApiMethod apiMethod)
-	{
-		return data.toVanilla(deobFromApiMethod(data, apiMethod));
-	}
+    throw new InjectException("Couldn't find field " + name);
+  }
 
-	static Signature apiToDeob(InjectData data, Signature api)
-	{
-		return new Signature.Builder()
-			.setReturnType(apiToDeob(data, api.getReturnValue()))
-			.addArguments(
-				api.getArguments().stream()
-					.map(type -> apiToDeob(data, type))
-					.collect(Collectors.toList())
-			).build();
-	}
+  static Field findField(InjectData data, String name, String hintClass) {
+    try {
+      return data.getVanilla().findClass(hintClass).findField(name);
+    } catch (Exception e) {
+      return data.getVanilla().findClass("" + hintClass).findField(name);
+    }
+  }
 
-	static Type apiToDeob(InjectData data, Type api)
-	{
-		return apiToDeob(data, api, null);
-	}
+  static Field findField(ClassGroup group, String name, String hintClass) {
+    Field field;
+    if (hintClass != null) {
+      ClassFile clazz = findClassOrThrow(group, hintClass);
 
-	static Type apiToDeob(InjectData data, Type api, Type deobType)
-	{
-		if (api.isPrimitive())
-		{
-			return api;
-		}
+      field = clazz.findField(name);
+      if (field != null) {
+        return field;
+      }
+    }
 
-		final String internalName = api.getInternalName();
-		if (internalName.startsWith(API_BASE))
-		{
-			return Type.getType("L" + api.getInternalName().substring(API_BASE.length()) + ";", api.getDimensions());
-		}
-		else if (internalName.startsWith(RL_API_BASE))
-		{
-			Class rlApiC = new Class(internalName);
-			Set<RSApiClass> allClasses = data.getRsApi().withInterface(rlApiC);
+    for (ClassFile clazz : group) {
+      if ((field = clazz.findField(name)) != null) {
+        return field;
+      }
+    }
 
-			// Cheeky unchecked exception
-			assert allClasses.size() > 0 : "No rs api class implements rl api class " + rlApiC.toString();
+    throw new InjectException("Field " + name + " doesn't exist");
+  }
 
-			if (allClasses.size() == 1)
-			{
-				RSApiClass highestKnown = allClasses.stream().findFirst().get();
-				boolean changed;
-				do
-				{
-					changed = false;
+  static ClassFile deobFromApiMethod(InjectData data, RSApiMethod apiMethod) {
+    return data.toDeob(apiMethod.getClazz().getName());
+  }
 
-					for (RSApiClass interf : highestKnown.getApiInterfaces())
-					{
-						if (interf.getInterfaces().contains(rlApiC))
-						{
-							highestKnown = interf;
-							changed = true;
-							break;
-						}
-					}
-				}
-				while (changed);
+  static ClassFile vanillaFromApiMethod(InjectData data, RSApiMethod apiMethod) {
+    return data.toVanilla(deobFromApiMethod(data, apiMethod));
+  }
 
-				return apiToDeob(data, Type.getType(highestKnown.getName(), api.getDimensions()));
-			}
-			else
-			{
-				for (RSApiClass rsApiClass : allClasses)
-				{
-					if (rsApiClass.getName().contains(deobType.getInternalName()))
-					{
-						return apiToDeob(data, Type.getType(rsApiClass.getName(), api.getDimensions()));
-					}
-				}
-			}
-		}
+  static Signature apiToDeob(InjectData data, Signature api) {
+    return new Signature.Builder()
+        .setReturnType(apiToDeob(data, api.getReturnValue()))
+        .addArguments(
+            api.getArguments().stream()
+                .map(type -> apiToDeob(data, type))
+                .collect(Collectors.toList())
+        ).build();
+  }
 
-		return api;
-	}
+  static Type apiToDeob(InjectData data, Type api) {
+    return apiToDeob(data, api, null);
+  }
 
-	static Type deobToVanilla(InjectData data, Type deobT)
-	{
-		if (deobT.isPrimitive())
-		{
-			return deobT;
-		}
+  static Type apiToDeob(InjectData data, Type api, Type deobType) {
+    if (api.isPrimitive()) {
+      return api;
+    }
 
-		final ClassFile deobClass = data.getDeobfuscated().findClass(deobT.getInternalName());
-		if (deobClass == null)
-		{
-			return deobT;
-		}
+    final String internalName = api.getInternalName();
+    if (internalName.startsWith(API_BASE)) {
+      return Type.getType("L" + api.getInternalName().substring(API_BASE.length()) + ";",
+          api.getDimensions());
+    } else if (internalName.startsWith(RL_API_BASE)) {
+      Class rlApiC = new Class(internalName);
+      Set<RSApiClass> allClasses = data.getRsApi().withInterface(rlApiC);
 
-		return Type.getType("L" + data.toVanilla(deobClass).getName() + ";", deobT.getDimensions());
-	}
+      // Cheeky unchecked exception
+      assert allClasses.size() > 0 : "No rs api class implements rl api class " + rlApiC.toString();
 
-	static boolean apiToDeobSigEquals(InjectData data, Signature deobSig, Signature apiSig)
-	{
-		return deobSig.equals(apiToDeob(data, apiSig));
-	}
+      if (allClasses.size() == 1)
+      {
+        RSApiClass highestKnown = allClasses.stream().findFirst().get();
+        boolean changed;
+        do
+        {
+          changed = false;
 
-	static boolean argsMatch(Signature a, Signature b)
-	{
-		List<Type> aa = a.getArguments();
-		List<Type> bb = b.getArguments();
+          for (RSApiClass interf : highestKnown.getApiInterfaces())
+          {
+            if (interf.getInterfaces().contains(rlApiC))
+            {
+              highestKnown = interf;
+              changed = true;
+              break;
+            }
+          }
+        }
+        while (changed);
 
-		if (aa.size() != bb.size())
-		{
-			return false;
-		}
+        return apiToDeob(data, Type.getType(highestKnown.getName(), api.getDimensions()));
+      }
+      else
+      {
+        for (RSApiClass rsApiClass : allClasses)
+        {
+          if (rsApiClass.getName().contains(deobType.getInternalName()))
+          {
+            return apiToDeob(data, Type.getType(rsApiClass.getName(), api.getDimensions()));
+          }
+        }
+      }
+    }
 
-		for (int i = 0; i < aa.size(); i++)
-		{
-			if (!aa.get(i).equals(bb.get(i)))
-			{
-				return false;
-			}
-		}
+    return api;
+  }
 
-		return true;
-	}
+  static Type deobToVanilla(InjectData data, Type deob) {
+    Type deobT;
+    if (!deob.toString().contains("/"))
+      deobT = new Type(deob.toString().replaceFirst("L", "L"));
+    else
+      deobT = deob;
+    if (deobT.isPrimitive()) {
+      return deobT;
+    }
 
-	/**
-	 * Gets the obfuscated name from something's annotations.
-	 * <p>
-	 * If the annotation doesn't exist return the current name instead.
-	 */
-	static <T extends Annotated & Named> String getObfuscatedName(T from)
-	{
-		Annotation name = from.findAnnotation(DeobAnnotations.OBFUSCATED_NAME);
-		return name == null ? from.getName() : name.getValueString();
-	}
+    final ClassFile deobClass = data.getDeobfuscated().findClass(deobT.getInternalName());
+    if (deobClass == null) {
+      return deobT;
+    }
 
-	/**
-	 * Gets the value of the @Export annotation on the object.
-	 */
-	static String getExportedName(Annotated from)
-	{
-		Annotation export = from.findAnnotation(DeobAnnotations.EXPORT);
-		return export == null ? null : export.getValueString();
-	}
+    return Type.getType("L" + data.toVanilla(deobClass).getName() + ";", deobT.getDimensions());
+  }
 
-	/**
-	 * Creates the correct load instruction for the variable with Type type and var index index.
-	 */
-	static Instruction createLoadForTypeIndex(Instructions instructions, Type type, int index)
-	{
-		if (type.getDimensions() > 0 || !type.isPrimitive())
-		{
-			return new ALoad(instructions, index);
-		}
+  static boolean apiToDeobSigEquals(InjectData data, Signature deobSig, Signature apiSig) {
+    return deobSig.toString().replace("", "").equals(apiToDeob(data, apiSig).toString());
+  }
 
-		switch (type.toString())
-		{
-			case "B":
-			case "C":
-			case "I":
-			case "S":
-			case "Z":
-				return new ILoad(instructions, index);
-			case "D":
-				return new DLoad(instructions, index);
-			case "F":
-				return new FLoad(instructions, index);
-			case "J":
-				return new LLoad(instructions, index);
-			default:
-				throw new IllegalStateException("Unknown type");
-		}
-	}
+  static boolean argsMatch(Signature a, Signature b) {
+    List<Type> aa = a.getArguments();
+    List<Type> bb = b.getArguments();
 
-	/**
-	 * Creates the right return instruction for an object with Type type
-	 */
-	static Instruction createReturnForType(Instructions instructions, Type type)
-	{
-		if (!type.isPrimitive())
-		{
-			return new Return(instructions, InstructionType.ARETURN);
-		}
+    if (aa.size() != bb.size()) {
+      return false;
+    }
 
-		switch (type.toString())
-		{
-			case "B":
-			case "C":
-			case "I":
-			case "S":
-			case "Z":
-				return new Return(instructions, InstructionType.IRETURN);
-			case "D":
-				return new Return(instructions, InstructionType.DRETURN);
-			case "F":
-				return new Return(instructions, InstructionType.FRETURN);
-			case "J":
-				return new Return(instructions, InstructionType.LRETURN);
-			case "V":
-				return new VReturn(instructions);
-			default:
-				throw new IllegalStateException("Unknown type");
-		}
-	}
+    for (int i = 0; i < aa.size(); i++) {
+      if (!aa.get(i).equals(bb.get(i))) {
+        return false;
+      }
+    }
 
-	static Instruction createInvokeFor(Instructions instructions, net.runelite.asm.pool.Method method, boolean isStatic)
-	{
-		if (isStatic)
-		{
-			return new InvokeStatic(instructions, method);
-		}
-		else
-		{
-			return new InvokeVirtual(instructions, method);
-		}
-	}
+    return true;
+  }
 
-	/**
-	 * Legit fuck annotations
-	 */
-	static ClassFile getVanillaClassFromAnnotationString(InjectData data, Annotation annotation)
-	{
-		Object v = annotation.getValue();
-		String str = ((org.objectweb.asm.Type) v).getInternalName();
-		return data.toVanilla(data.toDeob(str));
-	}
+  /**
+   * Gets the obfuscated name from something's annotations.
+   * <p>
+   * If the annotation doesn't exist return the current name instead.
+   */
+  static <T extends Annotated & Named> String getObfuscatedName(T from) {
+    return from.getName();
+  }
 
-	/**
-	 * Add after the get
-	 */
-	static void injectObfuscatedGetter(Number getter, Instructions instrs, Consumer<Instruction> into)
-	{
-		into.accept(new LDC(instrs, getter));
+  /**
+   * Gets the value of the @Export annotation on the object.
+   */
+  static String getExportedName(Annotated from) {
+    Annotation export = from.findAnnotation(DeobAnnotations.EXPORT);
+    return export == null ? null : export.getValueString();
+  }
 
-		if (getter instanceof Integer)
-		{
-			into.accept(new IMul(instrs));
-		}
-		else if (getter instanceof Long)
-		{
-			into.accept(new LMul(instrs));
-		}
-	}
+  /**
+   * Creates the correct load instruction for the variable with Type type and var index index.
+   */
+  static Instruction createLoadForTypeIndex(Instructions instructions, Type type, int index) {
+    if (type.getDimensions() > 0 || !type.isPrimitive()) {
+      return new ALoad(instructions, index);
+    }
 
-	/**
-	 * Add IN FRONT of the put
-	 *
-	 * @param getter should be the same value as for the getter (straight from ObfuscatedGetter)
-	 */
-	static void injectObfuscatedSetter(Number getter, Instructions instrs, Consumer<Instruction> into)
-	{
-		injectObfuscatedGetter(DMath.modInverse(getter), instrs, into);
-	}
+    switch (type.toString()) {
+      case "B":
+      case "C":
+      case "I":
+      case "S":
+      case "Z":
+        return new ILoad(instructions, index);
+      case "D":
+        return new DLoad(instructions, index);
+      case "F":
+        return new FLoad(instructions, index);
+      case "J":
+        return new LLoad(instructions, index);
+      default:
+        throw new IllegalStateException("Unknown type");
+    }
+  }
 
-	private static List<Type> findArgs(final String str, final List<Type> ret, final int from, final int to)
-	{
-		if (from >= to)
-		{
-			return ret;
-		}
+  /**
+   * Creates the right return instruction for an object with Type type
+   */
+  static Instruction createReturnForType(Instructions instructions, Type type) {
+    if (!type.isPrimitive()) {
+      return new Return(instructions, InstructionType.ARETURN);
+    }
 
-		int i = from;
-		while (str.charAt(i) == '[')
-		{
-			++i;
-		}
+    switch (type.toString()) {
+      case "B":
+      case "C":
+      case "I":
+      case "S":
+      case "Z":
+        return new Return(instructions, InstructionType.IRETURN);
+      case "D":
+        return new Return(instructions, InstructionType.DRETURN);
+      case "F":
+        return new Return(instructions, InstructionType.FRETURN);
+      case "J":
+        return new Return(instructions, InstructionType.LRETURN);
+      case "V":
+        return new VReturn(instructions);
+      default:
+        throw new IllegalStateException("Unknown type");
+    }
+  }
 
-		if (str.charAt(i) == 'L')
-		{
-			i = str.indexOf(';', i);
-		}
+  static Instruction createInvokeFor(Instructions instructions, net.runelite.asm.pool.Method method,
+      boolean isStatic) {
+    if (isStatic) {
+      return new InvokeStatic(instructions, method);
+    } else {
+      return new InvokeVirtual(instructions, method);
+    }
+  }
 
-		ret.add(new Type(str.substring(from, ++i)));
+  /**
+   * Legit fuck annotations
+   */
+  static ClassFile getVanillaClassFromAnnotationString(InjectData data, Annotation annotation) {
+    Object v = annotation.getValue();
+    String str = ((org.objectweb.asm.Type) v).getInternalName();
+    return data.toVanilla(data.toDeob(str));
+  }
 
-		return findArgs(str, ret, i, to);
-	}
+  /**
+   * Add after the get
+   */
+  static void injectObfuscatedGetter(Number getter, Instructions instrs,
+      Consumer<Instruction> into) {
+    into.accept(new LDC(instrs, getter));
+
+    if (getter instanceof Integer) {
+      into.accept(new IMul(instrs));
+    } else if (getter instanceof Long) {
+      into.accept(new LMul(instrs));
+    }
+  }
+
+  /**
+   * Add IN FRONT of the put
+   *
+   * @param getter should be the same value as for the getter (straight from ObfuscatedGetter)
+   */
+  static void injectObfuscatedSetter(Number getter, Instructions instrs,
+      Consumer<Instruction> into) {
+    injectObfuscatedGetter(DMath.modInverse(getter), instrs, into);
+  }
+
+  private static List<Type> findArgs(final String str, final List<Type> ret, final int from, final int to)
+  {
+    if (from >= to)
+    {
+      return ret;
+    }
+
+    int i = from;
+    while (str.charAt(i) == '[')
+    {
+      ++i;
+    }
+
+    if (str.charAt(i) == 'L')
+    {
+      i = str.indexOf(';', i);
+    }
+
+    ret.add(new Type(str.substring(from, ++i)));
+
+    return findArgs(str, ret, i, to);
+  }
 }

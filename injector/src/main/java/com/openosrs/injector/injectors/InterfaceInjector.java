@@ -14,48 +14,47 @@ import net.runelite.asm.pool.Class;
 import net.runelite.deob.DeobAnnotations;
 import static com.openosrs.injector.rsapi.RSApi.API_BASE;
 
-public class InterfaceInjector extends AbstractInjector
-{
-	private int implemented = 0;
+public class InterfaceInjector extends AbstractInjector {
 
-	public InterfaceInjector(InjectData inject)
-	{
-		super(inject);
-	}
+  private int implemented = 0;
 
-	public void inject()
-	{
-		// forEachPair performs actions on a deob-vanilla pair, which is what's needed here
-		inject.forEachPair(this::injectInterface);
+  public InterfaceInjector(InjectData inject) {
+    super(inject);
+  }
 
-		log.info("[INFO] Injected {} interfaces", implemented);
-	}
+  public void inject() {
+    // forEachPair performs actions on a deob-vanilla pair, which is what's needed here
+    inject.forEachPair(this::injectInterface);
 
-	private void injectInterface(final ClassFile deobCf, final ClassFile vanillaCf)
-	{
-		final String impls = DeobAnnotations.getImplements(deobCf);
+    //log.info("[INFO] Injected {} interfaces", implemented);
+  }
 
-		if (impls == null)
-		{
-			return;
-		}
+  private void injectInterface(final ClassFile deobCf, final ClassFile vanillaCf) {
+    String impls = DeobAnnotations.getImplements(deobCf);
 
-		final String fullName = API_BASE + impls;
-		if (!inject.getRsApi().hasClass(fullName))
-		{
-			log.error("[DEBUG] Class {} implements nonexistent interface {}, skipping interface injection",
-				deobCf.getName(),
-				fullName
-			);
+    if (impls == null) {
+      return;
+    }
 
-			return;
-		}
+    impls = impls.replace("", "");
 
-		final Interfaces interfaces = vanillaCf.getInterfaces();
-		System.out.println(fullName);
-		interfaces.addInterface(new Class(fullName));
-		implemented++;
+    final String fullName = API_BASE + impls;
+    if (fullName.contains("class"))
+      return;
 
-		inject.addToDeob(fullName, deobCf);
-	}
+    String message = "[WARNING]" +
+            " Class " + deobCf.getName() +
+            " implements nonexistent interface: " + fullName + ", " +
+                    "skipping interface injection...";
+    if (!inject.getRsApi().hasClass(fullName)) {
+      	log.debug(message);
+      return;
+    }
+
+    final Interfaces interfaces = vanillaCf.getInterfaces();
+    interfaces.addInterface(new Class(fullName));
+    implemented++;
+
+    inject.addToDeob(fullName, deobCf);
+  }
 }

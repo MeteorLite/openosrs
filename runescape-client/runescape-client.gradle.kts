@@ -31,6 +31,7 @@ dependencies {
 
     implementation(project(":injection-annotations"))
     implementation(group = "org.bouncycastle", name = "bcprov-jdk15on", version = "1.52")
+    implementation("com.google.code.gson:gson:2.8.9")
 
     testImplementation(group = "junit", name = "junit", version = "4.12")
     testImplementation(group = "org.slf4j", name = "slf4j-api", version = "1.7.32")

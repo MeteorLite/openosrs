@@ -9,8 +9,8 @@ public abstract class RSParamCompositionMixin implements RSParamComposition
 {
 	@Inject
 	@Override
-	public boolean isString()
+	public boolean isString$api()
 	{
-		return getType() == 's';
+		return getType$api() == 's';
 	}
 }

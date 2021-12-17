@@ -1008,7 +1008,7 @@ public abstract class RSClientMixin implements RSClient
 	{
 		List<Projectile> projectiles = new ArrayList<Projectile>();
 		RSNodeDeque projectileDeque = this.getProjectilesDeque();
-		Node head = projectileDeque.getSentinel();
+		Node head = projectileDeque.getSentinel$api();
 
 		for (Node node = head.getNext(); node != head; node = node.getNext())
 		{
@@ -1024,7 +1024,7 @@ public abstract class RSClientMixin implements RSClient
 	{
 		List<GraphicsObject> graphicsObjects = new ArrayList<GraphicsObject>();
 		RSNodeDeque graphicsObjectDeque = this.getGraphicsObjectDeque();
-		Node head = graphicsObjectDeque.getSentinel();
+		Node head = graphicsObjectDeque.getSentinel$api();
 
 		for (Node node = head.getNext(); node != head; node = node.getNext())
 		{
@@ -1286,7 +1286,7 @@ public abstract class RSClientMixin implements RSClient
 					if (itemDeque != null)
 					{
 						RSTile tile = tiles[plane][x][y];
-						RSNode head = itemDeque.getSentinel();
+						RSNode head = itemDeque.getSentinel$api();
 
 						for (RSNode current = head.getNext(); current != head; current = current.getNext())
 						{
@@ -1725,7 +1725,7 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@MethodHook("draw")
-	public void draw(boolean var1)
+	public void draw$api(boolean var1)
 	{
 		callbacks.frame();
 		updateCamera();
@@ -2080,7 +2080,7 @@ public abstract class RSClientMixin implements RSClient
 	public void addFriend(String friend)
 	{
 		RSFriendSystem friendSystem = getFriendManager();
-		friendSystem.addFriend(friend);
+		friendSystem.addFriend$api(friend);
 	}
 
 	@Inject
@@ -2088,7 +2088,7 @@ public abstract class RSClientMixin implements RSClient
 	public void removeFriend(String friend)
 	{
 		RSFriendSystem friendSystem = getFriendManager();
-		friendSystem.removeFriend(friend);
+		friendSystem.removeFriend$api(friend);
 	}
 
 	@Inject
@@ -2383,7 +2383,7 @@ public abstract class RSClientMixin implements RSClient
 		client.setMusicTrackVolume(volume);
 		if (client.getMidiPcmStream() != null)
 		{
-			client.getMidiPcmStream().setPcmStreamVolume(volume);
+			client.getMidiPcmStream().setPcmStreamVolume$api(volume);
 		}
 	}
 
@@ -2542,11 +2542,11 @@ public abstract class RSClientMixin implements RSClient
 		{
 			for (int i = 0; i < colorToFind.length; ++i)
 			{
-				modeldata.recolor(colorToFind[i], colorToReplace[i]);
+				modeldata.recolor$api(colorToFind[i], colorToReplace[i]);
 			}
 		}
 
-		return modeldata.toModel(modeldata.getAmbient() + 64, modeldata.getContrast() + 850, -30, -50, -30);
+		return modeldata.toModel$api(modeldata.getAmbient$api() + 64, modeldata.getContrast$api() + 850, -30, -50, -30);
 	}
 
 	@Inject
@@ -2655,7 +2655,7 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@MethodHook("doCycle")
-	protected final void doCycle()
+	protected final void doCycle$api()
 	{
 		client.getCallbacks().tick();
 	}

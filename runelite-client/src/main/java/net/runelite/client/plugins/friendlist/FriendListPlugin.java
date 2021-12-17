@@ -155,10 +155,10 @@ public class FriendListPlugin extends Plugin
 				.substring(0, messageNode.getValue().indexOf(" "));
 			ChatPlayer player = findFriend(name);
 
-			if (player != null && player.getWorld() > 0)
+			if (player != null && player.getWorld$api() > 0)
 			{
 				messageNode
-					.setValue(messageNode.getValue() + String.format(" (World %d)", player.getWorld()));
+					.setValue(messageNode.getValue() + String.format(" (World %d)", player.getWorld$api()));
 			}
 		}
 	}

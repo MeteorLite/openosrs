@@ -578,7 +578,7 @@ public class Hooks implements Callbacks
 		}
 		else
 		{
-			renderable.draw(orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+			renderable.draw$api(orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
 		}
 	}
 

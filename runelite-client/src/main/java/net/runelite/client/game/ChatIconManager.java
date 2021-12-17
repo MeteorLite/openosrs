@@ -113,24 +113,24 @@ public class ChatIconManager
 		{
 			IndexedSprite[] modIcons = client.getModIcons();
 			friendsChatOffset = modIcons.length;
-			clanOffset = friendsChatOffset + friendsChatIcons.size();
+			clanOffset = friendsChatOffset + friendsChatIcons.size$api();
 
 			IndexedSprite blank = ImageUtil.getImageIndexedSprite(
 				new BufferedImage(modIcons[0].getWidth(), modIcons[0].getHeight(), BufferedImage.TYPE_INT_ARGB),
 				client);
 
-			modIcons = Arrays.copyOf(modIcons, friendsChatOffset + friendsChatIcons.size() + clanIcons.size());
+			modIcons = Arrays.copyOf(modIcons, friendsChatOffset + friendsChatIcons.size$api() + clanIcons.size$api());
 			Arrays.fill(modIcons, friendsChatOffset, modIcons.length, blank);
 
 			client.setModIcons(modIcons);
 		}
 
-		friendsChatRankImages = new BufferedImage[friendsChatIcons.size()];
-		clanRankImages = new BufferedImage[clanIcons.size()];
+		friendsChatRankImages = new BufferedImage[friendsChatIcons.size$api()];
+		clanRankImages = new BufferedImage[clanIcons.size$api()];
 
 		final IndexedSprite[] modIcons = client.getModIcons();
 
-		for (int i = 0; i < friendsChatIcons.size(); i++)
+		for (int i = 0; i < friendsChatIcons.size$api(); i++)
 		{
 			final int fi = i;
 
@@ -141,12 +141,12 @@ public class ChatIconManager
 			});
 		}
 
-		for (int i = 0; i < clanIcons.size(); i++)
+		for (int i = 0; i < clanIcons.size$api(); i++)
 		{
 			final int key = clanIcons.getKeys()[i];
 			final int idx = clanRankToIdx(key);
 
-			assert idx >= 0 && idx < clanIcons.size();
+			assert idx >= 0 && idx < clanIcons.size$api();
 
 			spriteManager.getSpriteAsync(clanIcons.getIntValue(key), 0, sprite ->
 			{

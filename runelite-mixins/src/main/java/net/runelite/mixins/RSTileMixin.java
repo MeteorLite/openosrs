@@ -774,7 +774,7 @@ public abstract class RSTileMixin implements RSTile
 			if (oldQueue != null)
 			{
 				// despawn everything in old ..
-				RSNode head = oldQueue.getSentinel();
+				RSNode head = oldQueue.getSentinel$api();
 				for (RSNode cur = head.getNext(); cur != head; cur = cur.getNext())
 				{
 					RSTileItem item = (RSTileItem) cur;
@@ -813,7 +813,7 @@ public abstract class RSTileMixin implements RSTile
 		}
 
 		// The new item gets added to either the head, or the tail, depending on its price
-		RSNode head = newQueue.getSentinel();
+		RSNode head = newQueue.getSentinel$api();
 		RSTileItem current = null;
 		RSNode next = head.getPrevious();
 		//boolean forward = false;

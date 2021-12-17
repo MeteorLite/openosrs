@@ -42,12 +42,12 @@ public abstract class RSClanChannelMemberMixin implements RSClanChannelMember
 	@Override
 	public int compareTo(Nameable other)
 	{
-		return getName().compareTo(other.getName());
+		return getName$api().compareTo(other.getName$api());
 	}
 
 	@Inject
 	@Override
-	public String getPrevName()
+	public String getPrevName$api()
 	{
 		return null;
 	}
@@ -62,7 +62,7 @@ public abstract class RSClanChannelMemberMixin implements RSClanChannelMember
 
 	@Override
 	@Inject
-	public String getName()
+	public String getName$api()
 	{
 		return getUsername().getName();
 	}

@@ -47,13 +47,13 @@ public interface Model extends Renderable
 	 */
 	List<Triangle> getTriangles();
 
-	int getVerticesCount();
+	int getVerticesCount$api();
 
-	int[] getVerticesX();
+	int[] getVerticesX$api();
 
-	int[] getVerticesY();
+	int[] getVerticesY$api();
 
-	int[] getVerticesZ();
+	int[] getVerticesZ$api();
 
 	int getFaceCount();
 
@@ -63,11 +63,11 @@ public interface Model extends Renderable
 
 	int[] getFaceIndices3();
 
-	int[] getFaceColors1();
+	int[] getFaceColors1$api();
 
-	int[] getFaceColors2();
+	int[] getFaceColors2$api();
 
-	int[] getFaceColors3();
+	int[] getFaceColors3$api();
 
 	byte[] getFaceTransparencies();
 
@@ -80,15 +80,15 @@ public interface Model extends Renderable
 	int getUvBufferOffset();
 	void setUvBufferOffset(int bufferOffset);
 
-	int getBottomY();
+	int getBottomY$api();
 
-	void calculateBoundsCylinder();
+	void calculateBoundsCylinder$api();
 
 	byte[] getFaceRenderPriorities();
 
-	int getRadius();
+	int getRadius$api();
 
-	short[] getFaceTextures();
+	short[] getFaceTextures$api();
 
 	float[] getFaceTextureUVCoordinates();
 
@@ -104,14 +104,14 @@ public interface Model extends Renderable
 	int getXYZMag();
 	boolean isClickable();
 	
-	void drawFace(int face);
+	void drawFace$api(int face);
 
 	int[] getVertexNormalsX();
 	int[] getVertexNormalsY();
 	int[] getVertexNormalsZ();
 
-	byte getOverrideAmount();
-	byte getOverrideHue();
-	byte getOverrideSaturation();
-	byte getOverrideLuminance();
+	byte getOverrideAmount$api();
+	byte getOverrideHue$api();
+	byte getOverrideSaturation$api();
+	byte getOverrideLuminance$api();
 }

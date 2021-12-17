@@ -84,12 +84,12 @@ public abstract class RSModelDataMixin implements RSModelData
 	@Inject
 	public void vertexNormals()
 	{
-		RSVertexNormal[] vertexNormals = getVertexNormals();
-		RSVertexNormal[] vertexVertices = getVertexVertices();
+		RSVertexNormal[] vertexNormals = getVertexNormals$api();
+		RSVertexNormal[] vertexVertices = getVertexVertices$api();
 
 		if (vertexNormals != null && vertexNormalsX == null)
 		{
-			int verticesCount = getVerticesCount();
+			int verticesCount = getVerticesCount$api();
 
 			vertexNormalsX = new int[verticesCount];
 			vertexNormalsY = new int[verticesCount];
@@ -118,27 +118,27 @@ public abstract class RSModelDataMixin implements RSModelData
 	@Inject
 	public void computeTextureUVCoordinates()
 	{
-		final short[] faceTextures = getFaceTextures();
+		final short[] faceTextures = getFaceTextures$api();
 		if (faceTextures == null)
 		{
 			return;
 		}
 
-		final int[] vertexPositionsX = getVertexX();
-		final int[] vertexPositionsY = getVertexY();
-		final int[] vertexPositionsZ = getVertexZ();
+		final int[] vertexPositionsX = getVertexX$api();
+		final int[] vertexPositionsY = getVertexY$api();
+		final int[] vertexPositionsZ = getVertexZ$api();
 
-		final int[] trianglePointsX = getTrianglePointsX();
-		final int[] trianglePointsY = getTrianglePointsY();
-		final int[] trianglePointsZ = getTrianglePointsZ();
+		final int[] trianglePointsX = getTrianglePointsX$api();
+		final int[] trianglePointsY = getTrianglePointsY$api();
+		final int[] trianglePointsZ = getTrianglePointsZ$api();
 
-		final short[] texTriangleX = getTexTriangleX();
-		final short[] texTriangleY = getTexTriangleY();
-		final short[] texTriangleZ = getTexTriangleZ();
+		final short[] texTriangleX = getTexTriangleX$api();
+		final short[] texTriangleY = getTexTriangleY$api();
+		final short[] texTriangleZ = getTexTriangleZ$api();
 
-		final byte[] textureCoords = getTextureCoords();
+		final byte[] textureCoords = getTextureCoords$api();
 
-		int faceCount = getTriangleFaceCount();
+		int faceCount = getTriangleFaceCount$api();
 		float[] faceTextureUCoordinates = new float[faceCount * 6];
 
 		for (int i = 0; i < faceCount; i++)
