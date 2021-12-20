@@ -168,6 +168,7 @@ import net.runelite.rs.api.RSWidget;
 import net.runelite.rs.api.RSWorld;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 @Mixin(RSClient.class)
 public abstract class RSClientMixin implements RSClient
@@ -797,9 +798,33 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
+	public static RSRuneLiteMenuEntry newBareRuneliteMenuEntry()
+	{
+		throw new NotImplementedException();
+	}
+
+	@Inject
 	public static RSRuneLiteMenuEntry newRuneliteMenuEntry(int idx)
 	{
-		return null;
+		throw new NotImplementedException();
+	}
+
+	@Inject
+	@Override
+	public MenuEntry createMenuEntry(String option, String target, int identifier, int opcode, int param1, int param2, boolean forceLeftClick)
+	{
+		RSRuneLiteMenuEntry menuEntry = newBareRuneliteMenuEntry();
+
+		menuEntry.setOption(option);
+		menuEntry.setTarget(target);
+		menuEntry.setIdentifier(identifier);
+		menuEntry.setType(MenuAction.of(opcode));
+		menuEntry.setParam0(param1);
+		menuEntry.setParam1(param2);
+		menuEntry.setConsumer(null);
+		menuEntry.setForceLeftClick(forceLeftClick);
+
+		return menuEntry;
 	}
 
 	@Inject
@@ -999,6 +1024,17 @@ public abstract class RSClientMixin implements RSClient
 				menuArgument2
 			);
 			client.getCallbacks().post(menuEntryAdded);
+
+			if (menuEntryAdded.isModified() && client.getMenuOptionCount() == optionCount)
+			{
+				client.getMenuOptions()[tmpOptionsCount] = menuEntryAdded.getOption();
+				client.getMenuTargets()[tmpOptionsCount] = menuEntryAdded.getTarget();
+				client.getMenuIdentifiers()[tmpOptionsCount] = menuEntryAdded.getIdentifier();
+				client.getMenuOpcodes()[tmpOptionsCount] = menuEntryAdded.getType();
+				client.getMenuArguments1()[tmpOptionsCount] = menuEntryAdded.getActionParam0();
+				client.getMenuArguments2()[tmpOptionsCount] = menuEntryAdded.getActionParam1();
+				client.getMenuForceLeftClick()[tmpOptionsCount] = menuEntryAdded.isForceLeftClick();
+			}
 		}
 	}
 
